@@ -1,0 +1,1 @@
+create a remote private repo for the current project. use the gh cli. Push an initial commit with the current state of the repo
