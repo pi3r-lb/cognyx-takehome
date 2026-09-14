@@ -1,0 +1,43 @@
+{
+  "dataset_id": "cognyx-synthetic-rail-v1",
+  "data_status": "synthetic",
+  "provenance": "Original authored fixtures; no Alstom, customer, or third-party dataset rows copied",
+  "engineering_status": "Invented demonstration assumptions; not validated designs or substitution approvals",
+  "scope": "Three fictional variants; selected lighting, filtration and information-cabinet sub-assemblies only",
+  "snapshot_date": "2026-09-01",
+  "generator": "src/cognyx_takehome/generate_data.py",
+  "generation": "Deterministic authored scenarios; no randomness, network, or third-party dependencies",
+  "csv": {
+    "encoding": "UTF-8",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "header": true,
+    "newline": "LF",
+    "blank": "unknown or not applicable, never implicitly zero"
+  },
+  "identity": "Part reference plus revision; preserve raw values and use evidenced alias mapping",
+  "quantity_semantics": "Each row is a direct parent-child edge. Quantity is per one parent assembly, not per train. Root counts scale selected assemblies per train.",
+  "length_semantics": "Length is an item attribute; length_unit does not change quantity/uom",
+  "voltage_semantics": "Nominal item input voltage in V DC; cabinet input may differ from internal component bus voltage",
+  "source_semantics": "source_export_id/source_document identify invented source records. source_line is the line number within the simulated per-variant export including its header, not the combined bom.csv line.",
+  "deliberate_issues": "See evaluation-only expected/findings.json. Findings are scenario checks, not analyzer output or an exhaustive count of affected rows.",
+  "costs": "No costs, savings, or measured customer metrics included",
+  "files": {
+    "variants.csv": {
+      "records": 3,
+      "sha256": "bb6e58532184446dbf3e8907a6382d5c03ab2a395c57140a57f57017d06f4217"
+    },
+    "bom.csv": {
+      "records": 118,
+      "sha256": "c562e507fa65166e1f9b1dbc4138403db8bb808ef7b173837e902fce7077fc39"
+    },
+    "technical_notes.csv": {
+      "records": 18,
+      "sha256": "ba988119c7ce50fd92379bbe1fa4c9b8284ce92134c67da9585ddf268d5c8832"
+    },
+    "expected/findings.json": {
+      "records": 16,
+      "sha256": "ec894d1667d518e0eaf558b997a2f7b34e308ac50dfc3d044892ef9daabd2fa0"
+    }
+  }
+}

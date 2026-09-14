@@ -8,8 +8,10 @@ them, and explains sub-assembly reuse opportunities and data inconsistencies.
 The brief recommends no more than four hours of preparation. Favor a working,
 well-prioritized demonstration with evidence and clear limitations.
 
-The repository currently contains a Python scaffold, not an implemented demo.
-Do not describe planned capabilities as shipped.
+The repository contains a Python scaffold plus reproducible synthetic CSV data
+and fixture checks. The main command still prints a greeting; ingestion,
+normalization, and reuse analysis are not implemented. Do not describe planned
+capabilities as shipped.
 
 ## Documentation is in Obsidian
 
@@ -31,6 +33,26 @@ business assumptions, and demo preparation in that directory. Use Markdown and
 Obsidian wiki links between notes. Preserve the original intro and brief.
 The repository README is a short evaluator-facing entry point; keep agent
 instructions here. Do not create a competing documentation tree in the repository.
+
+The Obsidian CLI (`/opt/homebrew/bin/obsidian`) is enabled and was verified against
+this project vault on 2026-09-14. Use it for supported vault operations. Consult
+`obsidian --help` for syntax; put the command first and explicitly specify
+`vault=pierre-dlb` and the vault-relative `path=cognyx-takehome/<note>.md`.
+For example:
+
+```sh
+obsidian read vault=pierre-dlb 'path=cognyx-takehome/02 - Project Hub.md'
+obsidian append vault=pierre-dlb 'path=cognyx-takehome/HANDOFF.md' 'content=Markdown entry'
+```
+
+Quote arguments containing spaces and use `\n` in CLI content values for newlines.
+Verify writes by reading the target note back. The CLI needs access to the running
+Obsidian app; use the environment's approval mechanism if sandbox access blocks it.
+Direct Markdown edits in the canonical directory are also appropriate when simpler
+or when the CLI does not support the operation. Keep references as Obsidian wiki
+links. Do not create temporary Python scripts just to write or append routine
+documentation. This user preference applies across sessions; either method must
+still respect the environment's write permissions described below.
 
 Record decisions in `03 - Decisions.md` with context, alternatives, rationale,
 consequences, and status. Distinguish user decisions, agent implementation choices,
@@ -74,8 +96,15 @@ claim it was saved.
   `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -c 'from cognyx_takehome import main; main()'`.
 - Once dependencies are installed with `uv sync`, the declared entry point is
   `uv run cognyx-takehome`. Do not treat an import smoke check as packaging validation.
-- No test suite or lint configuration exists yet. Add meaningful checks with the
-  implemented behavior; record the commands here when the workflow changes.
+- Generate the checked-in synthetic fixtures with:
+  `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m cognyx_takehome.generate_data`.
+- Run fixture contract checks with:
+  `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v`.
+  These verify data generation and scenarios, not a shipped analysis engine.
+  No lint configuration exists yet.
+- `data/manifest.json` defines CSV and quantity semantics. Keep the raw input
+  files separate from `data/expected/findings.json`, which is an evaluation oracle
+  and must never be an input to the future analyzer.
 - Use synthetic data for the exercise. Preserve source references and make
   normalization, uncertainty, and inconsistency findings explainable.
 - Distinguish observed reuse from candidate reusability requiring engineering

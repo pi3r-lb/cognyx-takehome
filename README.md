@@ -3,8 +3,42 @@
 A take-home project exploring sub-assembly reuse across train variants using
 synthetic bill-of-materials data and technical notes.
 
-**Status:** repository initialization. The current Python scaffold prints a greeting;
-data ingestion, normalization, and reuse analysis are not implemented yet.
+**Status:** reproducible synthetic data and fixture checks are available. The main
+console command still prints a greeting; ingestion, normalization, and reuse
+analysis are not implemented yet.
+
+## Synthetic pilot data
+
+The checked-in [data](data/) covers three fictional train variants and selected
+cabin-lighting, HVAC-filter, and passenger-information assemblies:
+
+- [bom.csv](data/bom.csv): 118 raw parent-child records with stable source IDs.
+- [technical_notes.csv](data/technical_notes.csv): 18 French, English, and mixed notes.
+- [variants.csv](data/variants.csv): three variant roots and the snapshot scope.
+- [manifest.json](data/manifest.json): provenance, field semantics, counts, and hashes.
+- [expected/findings.json](data/expected/findings.json): 16 evaluation scenarios;
+  **never use this answer key as analyzer input**.
+
+All names, identifiers, dimensions, and technical statements are invented; these
+are not Alstom data or validated engineering designs. The data intentionally mixes
+reference typos, units, decimal formats, duplicate rows, missing values, and a
+conflicting dimension. It also includes valid differences that must remain:
+voltage, revision, and material. Observed reuse is distinct from a candidate
+requiring engineering approval. No costs or savings are asserted.
+
+CSV files are UTF-8 with comma delimiters and headers. Quantities are **per parent**;
+train-level counts multiply child quantities. Blank quantities mean unknown.
+The generator uses only the Python 3.9 standard library and runs offline:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m cognyx_takehome.generate_data
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v
+```
+
+Regeneration replaces the named dataset files deterministically. Use
+`--output /tmp/cognyx-data-preview` to generate a separate copy. Fixture checks
+verify reproducibility, source links, hierarchy, and the authored scenarios;
+they do not validate an analysis engine.
 
 ## Scaffold check
 

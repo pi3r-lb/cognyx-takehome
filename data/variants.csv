@@ -1,0 +1,4 @@
+variant_id,name,root_ref,root_revision,snapshot_date,scope,data_status
+REG-A,Regional standard,SYN-TRAIN-A,A,2026-09-01,Selected interior sub-assemblies only; not a complete train BOM,synthetic
+REG-B,Regional extended,SYN-TRAIN-B,A,2026-09-01,Selected interior sub-assemblies only; not a complete train BOM,synthetic
+REG-C,Regional cold-climate,SYN-TRAIN-C,A,2026-09-01,Selected interior sub-assemblies only; not a complete train BOM,synthetic

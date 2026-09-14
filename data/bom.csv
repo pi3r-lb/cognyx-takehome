@@ -1,0 +1,119 @@
+row_id,source_export_id,source_line,variant_id,parent_ref,parent_revision,item_ref,item_revision,item_type,description,quantity,uom,supplier,manufacturer_part_number,length,length_unit,material,voltage_v
+REG-A-001,SYNTHETIC-PLM-REG-A,2,REG-A,SYN-TRAIN-A,A,LGT-100,A,assembly,Cabin lighting module,12,EA,Synthelume,SYN-MPN-LGT-100,1200,mm,aluminium,24
+REG-A-002,SYNTHETIC-PLM-REG-A,3,REG-A,LGT-100,A,LGT-RAIL,A,component,Light extrusion,1,EA,Synthelume,SYN-MPN-LGT-RAIL,1200,mm,aluminium,
+REG-A-003,SYNTHETIC-PLM-REG-A,4,REG-A,LGT-100,A,LGT-LED,A,component,LED board,2,EA,Synthelume,SYN-MPN-LGT-LED,,,,24
+REG-A-004,SYNTHETIC-PLM-REG-A,5,REG-A,LGT-100,A,LGT-DRV,A,component,LED driver,1,EA,DemoVolt,SYN-MPN-LGT-DRV,,,,24
+REG-A-005,SYNTHETIC-PLM-REG-A,6,REG-A,LGT-100,A,LGT-DIFF,A,component,Light diffuser,1,EA,Synthelume,SYN-MPN-LGT-DIFF,1200,mm,polycarbonate,
+REG-A-006,SYNTHETIC-PLM-REG-A,7,REG-A,LGT-100,A,LGT-END,A,component,End cap,2,EA,Synthelume,SYN-MPN-LGT-END,,,polycarbonate,
+REG-A-007,SYNTHETIC-PLM-REG-A,8,REG-A,LGT-100,A,LGT-CLIP,A,component,Mounting clip,4,EA,MockFix,SYN-MPN-LGT-CLIP,,,steel,
+REG-A-008,SYNTHETIC-PLM-REG-A,9,REG-A,LGT-100,A,CBL-2C,A,component,Two-core cable,2.5,M,DemoVolt,SYN-MPN-CBL-2C,,,,
+REG-A-009,SYNTHETIC-PLM-REG-A,10,REG-A,LGT-100,A,CON-2P,A,component,Two-pole connector,2,EA,DemoVolt,SYN-MPN-CON-2P,,,,
+REG-A-010,SYNTHETIC-PLM-REG-A,11,REG-A,LGT-100,A,FIX-M6-20,A,component,M6 mounting bolt,4,EA,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-A-011,SYNTHETIC-PLM-REG-A,12,REG-A,LGT-100,A,FIX-W6,A,component,M6 washer,4,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-A-012,SYNTHETIC-PLM-REG-A,13,REG-A,LGT-100,A,FIX-N6,A,component,M6 nut,4,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-A-013,SYNTHETIC-PLM-REG-A,14,REG-A,LGT-100,A,LGT-LABEL,A,component,Lighting identification label,1,EA,Synthelume,SYN-MPN-LGT-LABEL,,,,
+REG-A-014,SYNTHETIC-PLM-REG-A,15,REG-A,SYN-TRAIN-A,A,FLT-100,A,assembly,HVAC filter cassette,2,EA,FictiAir,SYN-MPN-FLT-100,600,mm,aluminium,
+REG-A-015,SYNTHETIC-PLM-REG-A,16,REG-A,FLT-100,A,FLT-FRAME,A,component,Filter frame,1,EA,FictiAir,SYN-MPN-FLT-FRAME,600,mm,aluminium,
+REG-A-016,SYNTHETIC-PLM-REG-A,17,REG-A,FLT-100,A,FLT-MEDIA,A,component,Standard filter insert,1,EA,FictiAir,SYN-MPN-FLT-MEDIA,,,,
+REG-A-017,SYNTHETIC-PLM-REG-A,18,REG-A,FLT-100,A,FLT-GASK-EP,A,component,Filter gasket,2.4,M,FictiAir,SYN-MPN-FLT-GASK-EP,,,EPDM,
+REG-A-018,SYNTHETIC-PLM-REG-A,19,REG-A,FLT-100,A,FLT-GRID,A,component,Filter support grid,1,EA,FictiAir,SYN-MPN-FLT-GRID,600,mm,steel,
+REG-A-019,SYNTHETIC-PLM-REG-A,20,REG-A,FLT-100,A,FLT-LATCH,A,component,Filter latch,2,EA,MockFix,SYN-MPN-FLT-LATCH,,,,
+REG-A-020,SYNTHETIC-PLM-REG-A,21,REG-A,FLT-100,A,FLT-HINGE,A,component,Filter hinge,2,EA,MockFix,SYN-MPN-FLT-HINGE,,,,
+REG-A-021,SYNTHETIC-PLM-REG-A,22,REG-A,FLT-100,A,FLT-HANDLE,A,component,Filter handle,1,EA,MockFix,SYN-MPN-FLT-HANDLE,,,,
+REG-A-022,SYNTHETIC-PLM-REG-A,23,REG-A,FLT-100,A,FIX-M6-20,A,component,M6 mounting bolt,8,EA,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-A-023,SYNTHETIC-PLM-REG-A,24,REG-A,FLT-100,A,FIX-W6,A,component,M6 washer,8,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-A-024,SYNTHETIC-PLM-REG-A,25,REG-A,FLT-100,A,FIX-N6,A,component,M6 nut,8,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-A-025,SYNTHETIC-PLM-REG-A,26,REG-A,FLT-100,A,FLT-LABEL,A,component,Airflow direction label,1,EA,FictiAir,SYN-MPN-FLT-LABEL,,,,
+REG-A-026,SYNTHETIC-PLM-REG-A,27,REG-A,FLT-100,A,FLT-STOP,A,component,Filter end stop,2,EA,FictiAir,SYN-MPN-FLT-STOP,,,,
+REG-A-027,SYNTHETIC-PLM-REG-A,28,REG-A,SYN-TRAIN-A,A,CAB-240,A,assembly,Passenger information cabinet,1,EA,DemoVolt,SYN-MPN-CAB-240,600,mm,aluminium,24
+REG-A-028,SYNTHETIC-PLM-REG-A,29,REG-A,CAB-240,A,CAB-BOX,A,component,Cabinet enclosure,1,EA,DemoVolt,SYN-MPN-CAB-BOX,600,mm,aluminium,
+REG-A-029,SYNTHETIC-PLM-REG-A,30,REG-A,CAB-240,A,CAB-PS24,A,component,Cabinet power module,1,EA,DemoVolt,SYN-MPN-CAB-PS24,,,,24
+REG-A-030,SYNTHETIC-PLM-REG-A,31,REG-A,CAB-240,A,CAB-CPU,A,component,Information controller,1,EA,DemoVolt,SYN-MPN-CAB-CPU,,,,24
+REG-A-031,SYNTHETIC-PLM-REG-A,32,REG-A,CAB-240,A,CAB-SW,A,component,Network switch,1,EA,DemoVolt,SYN-MPN-CAB-SW,,,,24
+REG-A-032,SYNTHETIC-PLM-REG-A,33,REG-A,CAB-240,A,CAB-TERM,A,component,Input terminal block,1,EA,DemoVolt,SYN-MPN-CAB-TERM,,,,
+REG-A-033,SYNTHETIC-PLM-REG-A,34,REG-A,CAB-240,A,CAB-FUSE,A,component,Input fuse holder,1,EA,DemoVolt,SYN-MPN-CAB-FUSE,,,,
+REG-A-034,SYNTHETIC-PLM-REG-A,35,REG-A,CAB-240,A,CAB-H24,A,component,Cabinet input harness,1,EA,DemoVolt,SYN-MPN-CAB-H24,,,,24
+REG-A-035,SYNTHETIC-PLM-REG-A,36,REG-A,CAB-240,A,CAB-FAN,A,component,Cabinet fan,1,EA,DemoVolt,SYN-MPN-CAB-FAN,,,,24
+REG-A-036,SYNTHETIC-PLM-REG-A,37,REG-A,CAB-240,A,CAB-DIN,A,component,DIN mounting rail,1,EA,MockFix,SYN-MPN-CAB-DIN,500,mm,steel,
+REG-A-037,SYNTHETIC-PLM-REG-A,38,REG-A,CAB-240,A,FIX-M6-20,A,component,M6 mounting bolt,6,EA,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-A-038,SYNTHETIC-PLM-REG-A,39,REG-A,CAB-240,A,FIX-W6,A,component,M6 washer,6,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-A-039,SYNTHETIC-PLM-REG-A,40,REG-A,CAB-240,A,FIX-N6,A,component,M6 nut,6,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-B-001,SYNTHETIC-PLM-REG-B,2,REG-B,SYN-TRAIN-B,A, LGT-1O0 ,A,assembly,Module éclairage cabine,16,pcs,Synthelume,SYN-MPN-LGT-100,1200,mm,aluminium,24
+REG-B-002,SYNTHETIC-PLM-REG-B,3,REG-B, LGT-1O0 ,A,LGT-RAIL,A,component,Profilé éclairage,1,pcs,Synthelume,SYN-MPN-LGT-RAIL,1200,mm,aluminium,
+REG-B-003,SYNTHETIC-PLM-REG-B,4,REG-B, LGT-1O0 ,A,LGT-LED,A,component,Carte LED,2,pcs,Synthelume,SYN-MPN-LGT-LED,,,,24
+REG-B-004,SYNTHETIC-PLM-REG-B,5,REG-B, LGT-1O0 ,A,LGT-DRV,A,component,Pilote LED,1,pcs,DemoVolt,SYN-MPN-LGT-DRV,,,,24
+REG-B-005,SYNTHETIC-PLM-REG-B,6,REG-B, LGT-1O0 ,A,LGT-DIFF,A,component,Diffuseur éclairage,1,pcs,Synthelume,SYN-MPN-LGT-DIFF,1200,mm,polycarbonate,
+REG-B-006,SYNTHETIC-PLM-REG-B,7,REG-B, LGT-1O0 ,A,LGT-END,A,component,Embout,2,pcs,Synthelume,SYN-MPN-LGT-END,,,polycarbonate,
+REG-B-007,SYNTHETIC-PLM-REG-B,8,REG-B, LGT-1O0 ,A,LGT-CLIP,A,component,Clip de fixation,4,pcs,MockFix,SYN-MPN-LGT-CLIP,,,steel,
+REG-B-008,SYNTHETIC-PLM-REG-B,9,REG-B, LGT-1O0 ,A,CBL-2C,A,component,Câble deux conducteurs,2500,mm,DemoVolt,SYN-MPN-CBL-2C,,,,
+REG-B-009,SYNTHETIC-PLM-REG-B,10,REG-B, LGT-1O0 ,A,CON-2P,A,component,Connecteur deux pôles,2,pcs,DemoVolt,SYN-MPN-CON-2P,,,,
+REG-B-010,SYNTHETIC-PLM-REG-B,11,REG-B, LGT-1O0 ,A,FIX-M6-20,A,component,Vis de fixation M6,4,pcs,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-B-011,SYNTHETIC-PLM-REG-B,12,REG-B, LGT-1O0 ,A,FIX-W6,A,component,Rondelle M6,4,pcs,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-B-012,SYNTHETIC-PLM-REG-B,13,REG-B, LGT-1O0 ,A,FIX-N6,A,component,Écrou M6,4,pcs,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-B-013,SYNTHETIC-PLM-REG-B,14,REG-B, LGT-1O0 ,A,LGT-LABEL,A,component,Étiquette éclairage,1,pcs,Synthelume,SYN-MPN-LGT-LABEL,,,,
+REG-B-014,SYNTHETIC-PLM-REG-B,15,REG-B,SYN-TRAIN-B,A,FLT-100,A,assembly,Cassette filtre CVC,3,pcs,FictiAir,SYN-MPN-FLT-100,600,mm,aluminium,
+REG-B-015,SYNTHETIC-PLM-REG-B,16,REG-B,FLT-100,A,FLT-FRAME,A,component,Cadre filtre,1,pcs,FICTIAIR ,SYN-MPN-FLT-FRAME,"0,6",m,aluminium,
+REG-B-016,SYNTHETIC-PLM-REG-B,17,REG-B,FLT-100,A,FLT-MEDIA,A,component,Élément filtrant standard,1,pcs,FICTIAIR ,SYN-MPN-FLT-MEDIA,,,,
+REG-B-017,SYNTHETIC-PLM-REG-B,18,REG-B,FLT-100,A,FLT-GASK-EP,A,component,Joint filtre,"2,4",m,FICTIAIR ,SYN-MPN-FLT-GASK-EP,,,EPDM,
+REG-B-018,SYNTHETIC-PLM-REG-B,19,REG-B,FLT-100,A,FLT-GRID,A,component,Grille support filtre,1,pcs,FICTIAIR ,SYN-MPN-FLT-GRID,600,mm,steel,
+REG-B-019,SYNTHETIC-PLM-REG-B,20,REG-B,FLT-100,A,FLT-LATCH,A,component,Loquet filtre,2,pcs,MockFix,SYN-MPN-FLT-LATCH,,,,
+REG-B-020,SYNTHETIC-PLM-REG-B,21,REG-B,FLT-100,A,FLT-HINGE,A,component,Charnière filtre,2,pcs,MockFix,SYN-MPN-FLT-HINGE,,,,
+REG-B-021,SYNTHETIC-PLM-REG-B,22,REG-B,FLT-100,A,FLT-HANDLE,A,component,Poignée filtre,1,pcs,MockFix,SYN-MPN-FLT-HANDLE,,,,
+REG-B-022,SYNTHETIC-PLM-REG-B,23,REG-B,FLT-100,A,FIX-M6-20,A,component,Vis de fixation M6,8,pcs,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-B-023,SYNTHETIC-PLM-REG-B,24,REG-B,FLT-100,A,FIX-W6,A,component,Rondelle M6,8,pcs,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-B-024,SYNTHETIC-PLM-REG-B,25,REG-B,FLT-100,A,FIX-N6,A,component,Écrou M6,8,pcs,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-B-025,SYNTHETIC-PLM-REG-B,26,REG-B,FLT-100,A,FLT-LABEL,A,component,Étiquette sens du flux,1,pcs,FICTIAIR ,SYN-MPN-FLT-LABEL,,,,
+REG-B-026,SYNTHETIC-PLM-REG-B,27,REG-B,FLT-100,A,FLT-STOP,A,component,Butée filtre,2,pcs,FICTIAIR ,SYN-MPN-FLT-STOP,,,,
+REG-B-027,SYNTHETIC-PLM-REG-B,28,REG-B,SYN-TRAIN-B,A,CAB-240,A,assembly,Coffret information voyageurs,1,pcs,DemoVolt,SYN-MPN-CAB-240,600,mm,aluminium,24
+REG-B-028,SYNTHETIC-PLM-REG-B,29,REG-B,CAB-240,A,CAB-BOX,A,component,Boîtier coffret,1,pcs,DemoVolt,SYN-MPN-CAB-BOX,600,mm,aluminium,
+REG-B-029,SYNTHETIC-PLM-REG-B,30,REG-B,CAB-240,A,CAB-PS24,A,component,Module alimentation coffret,1,pcs,DemoVolt,SYN-MPN-CAB-PS24,,,,24
+REG-B-030,SYNTHETIC-PLM-REG-B,31,REG-B,CAB-240,A,CAB-CPU,A,component,Contrôleur information,1,pcs,DemoVolt,SYN-MPN-CAB-CPU,,,,24
+REG-B-031,SYNTHETIC-PLM-REG-B,32,REG-B,CAB-240,A,CAB-SW,A,component,Commutateur réseau,1,pcs,DemoVolt,SYN-MPN-CAB-SW,,,,24
+REG-B-032,SYNTHETIC-PLM-REG-B,33,REG-B,CAB-240,A,CAB-TERM,A,component,Bornier entrée,,pcs,DemoVolt,SYN-MPN-CAB-TERM,,,,
+REG-B-033,SYNTHETIC-PLM-REG-B,34,REG-B,CAB-240,A,CAB-FUSE,A,component,Porte-fusible entrée,1,pcs,DemoVolt,SYN-MPN-CAB-FUSE,,,,
+REG-B-034,SYNTHETIC-PLM-REG-B,35,REG-B,CAB-240,A,CAB-H24,A,component,Faisceau entrée coffret,1,pcs,DemoVolt,SYN-MPN-CAB-H24,,,,24
+REG-B-035,SYNTHETIC-PLM-REG-B,36,REG-B,CAB-240,A,CAB-FAN,A,component,Ventilateur coffret,1,pcs,DemoVolt,SYN-MPN-CAB-FAN,,,,24
+REG-B-036,SYNTHETIC-PLM-REG-B,37,REG-B,CAB-240,A,CAB-DIN,A,component,Rail de montage DIN,1,pcs,MockFix,SYN-MPN-CAB-DIN,500,mm,steel,
+REG-B-037,SYNTHETIC-PLM-REG-B,38,REG-B,CAB-240,A,FIX-M6-20,A,component,Vis de fixation M6,6,pcs,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-B-038,SYNTHETIC-PLM-REG-B,39,REG-B,CAB-240,A,FIX-W6,A,component,Rondelle M6,6,pcs,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-B-039,SYNTHETIC-PLM-REG-B,40,REG-B,CAB-240,A,FIX-N6,A,component,Écrou M6,6,pcs,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-B-040,SYNTHETIC-PLM-REG-B,41,REG-B,FLT-100,A,FLT-LATCH,A,component,Loquet filtre,2,pcs,MockFix,SYN-MPN-FLT-LATCH,,,,
+REG-C-001,SYNTHETIC-PLM-REG-C,2,REG-C,SYN-TRAIN-C,A,LGT-100,A,assembly,Cabin lighting module,12,EA,Synthelume,SYN-MPN-LGT-100,1200,mm,aluminium,24
+REG-C-002,SYNTHETIC-PLM-REG-C,3,REG-C,LGT-100,A,LGT-RAIL,A,component,Light extrusion,1,EA,Synthelume,SYN-MPN-LGT-RAIL,1200,mm,aluminium,
+REG-C-003,SYNTHETIC-PLM-REG-C,4,REG-C,LGT-100,A,LGT-LED,A,component,LED board,2,EA,Synthelume,SYN-MPN-LGT-LED,,,,24
+REG-C-004,SYNTHETIC-PLM-REG-C,5,REG-C,LGT-100,A,LGT-DRV,A,component,LED driver,1,EA,DemoVolt,SYN-MPN-LGT-DRV,,,,24
+REG-C-005,SYNTHETIC-PLM-REG-C,6,REG-C,LGT-100,A,LGT-DIFF,A,component,Light diffuser,1,EA,Synthelume,SYN-MPN-LGT-DIFF,1200,mm,polycarbonate,
+REG-C-006,SYNTHETIC-PLM-REG-C,7,REG-C,LGT-100,A,LGT-END,A,component,End cap,2,EA,Synthelume,SYN-MPN-LGT-END,,,polycarbonate,
+REG-C-007,SYNTHETIC-PLM-REG-C,8,REG-C,LGT-100,A,LGT-CLIP,A,component,Mounting clip,4,EA,MockFix,SYN-MPN-LGT-CLIP,,,steel,
+REG-C-008,SYNTHETIC-PLM-REG-C,9,REG-C,LGT-100,A,CBL-2C,A,component,Two-core cable,2.5,M,DemoVolt,SYN-MPN-CBL-2C,,,,
+REG-C-009,SYNTHETIC-PLM-REG-C,10,REG-C,LGT-100,A,CON-2P,A,component,Two-pole connector,2,EA,DemoVolt,SYN-MPN-CON-2P,,,,
+REG-C-010,SYNTHETIC-PLM-REG-C,11,REG-C,LGT-100,A,FIX-M6-20,A,component,M6 mounting bolt,4,EA,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-C-011,SYNTHETIC-PLM-REG-C,12,REG-C,LGT-100,A,FIX-W6,A,component,M6 washer,4,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-C-012,SYNTHETIC-PLM-REG-C,13,REG-C,LGT-100,A,FIX-N6,A,component,M6 nut,4,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-C-013,SYNTHETIC-PLM-REG-C,14,REG-C,LGT-100,A,LGT-LABEL,A,component,Lighting identification label,1,EA,Synthelume,SYN-MPN-LGT-LABEL,,,,
+REG-C-014,SYNTHETIC-PLM-REG-C,15,REG-C,SYN-TRAIN-C,A,FLT-200,A,assembly,HVAC filter cassette,2,EA,FictiAir,SYN-MPN-FLT-200,600,mm,aluminium,
+REG-C-015,SYNTHETIC-PLM-REG-C,16,REG-C,FLT-200,A,FLT-FRAME,A,component,Filter frame,1,EA,FictiAir,SYN-MPN-FLT-FRAME,600,mm,aluminium,
+REG-C-016,SYNTHETIC-PLM-REG-C,17,REG-C,FLT-200,A,FLT-MEDIA-C,A,component,Cold-climate filter insert,1,EA,FictiAir,SYN-MPN-FLT-MEDIA-C,,,,
+REG-C-017,SYNTHETIC-PLM-REG-C,18,REG-C,FLT-200,A,FLT-GASK-SI,A,component,Filter gasket,2.4,M,FictiAir,SYN-MPN-FLT-GASK-SI,,,silicone,
+REG-C-018,SYNTHETIC-PLM-REG-C,19,REG-C,FLT-200,A,FLT-GRID,A,component,Filter support grid,1,EA,FictiAir,SYN-MPN-FLT-GRID,600,mm,steel,
+REG-C-019,SYNTHETIC-PLM-REG-C,20,REG-C,FLT-200,A,FLT-LATCH,A,component,Filter latch,2,EA,MockFix,SYN-MPN-FLT-LATCH,,,,
+REG-C-020,SYNTHETIC-PLM-REG-C,21,REG-C,FLT-200,A,FLT-HINGE,A,component,Filter hinge,2,EA,MockFix,SYN-MPN-FLT-HINGE,,,,
+REG-C-021,SYNTHETIC-PLM-REG-C,22,REG-C,FLT-200,A,FLT-HANDLE,A,component,Filter handle,1,EA,MockFix,SYN-MPN-FLT-HANDLE,,,,
+REG-C-022,SYNTHETIC-PLM-REG-C,23,REG-C,FLT-200,A,FIX-M6-20,A,component,M6 mounting bolt,8,EA,MockFix,SYN-MPN-FIX-M6-20,20,mm,steel,
+REG-C-023,SYNTHETIC-PLM-REG-C,24,REG-C,FLT-200,A,FIX-W6,A,component,M6 washer,8,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-C-024,SYNTHETIC-PLM-REG-C,25,REG-C,FLT-200,A,FIX-N6,A,component,M6 nut,8,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
+REG-C-025,SYNTHETIC-PLM-REG-C,26,REG-C,FLT-200,A,FLT-LABEL,A,component,Airflow direction label,1,EA,FictiAir,SYN-MPN-FLT-LABEL,,,,
+REG-C-026,SYNTHETIC-PLM-REG-C,27,REG-C,FLT-200,A,FLT-STOP,A,component,Filter end stop,2,EA,FictiAir,SYN-MPN-FLT-STOP,,,,
+REG-C-027,SYNTHETIC-PLM-REG-C,28,REG-C,SYN-TRAIN-C,A,CAB-110,A,assembly,Passenger information cabinet,1,EA,DemoVolt,SYN-MPN-CAB-110,600,mm,aluminium,110
+REG-C-028,SYNTHETIC-PLM-REG-C,29,REG-C,CAB-110,A,CAB-BOX,A,component,Cabinet enclosure,1,EA,DemoVolt,SYN-MPN-CAB-BOX,600,mm,aluminium,
+REG-C-029,SYNTHETIC-PLM-REG-C,30,REG-C,CAB-110,A,CAB-PS110,A,component,Cabinet power module,1,EA,DemoVolt,SYN-MPN-CAB-PS110,,,,110
+REG-C-030,SYNTHETIC-PLM-REG-C,31,REG-C,CAB-110,A,CAB-CPU,A,component,Information controller,1,EA,DemoVolt,SYN-MPN-CAB-CPU,,,,24
+REG-C-031,SYNTHETIC-PLM-REG-C,32,REG-C,CAB-110,A,CAB-SW,A,component,Network switch,1,EA,,SYN-MPN-CAB-SW,,,,24
+REG-C-032,SYNTHETIC-PLM-REG-C,33,REG-C,CAB-110,A,CAB-TERM,A,component,Input terminal block,1,EA,DemoVolt,SYN-MPN-CAB-TERM,,,,
+REG-C-033,SYNTHETIC-PLM-REG-C,34,REG-C,CAB-110,A,CAB-FUSE,A,component,Input fuse holder,1,EA,DemoVolt,SYN-MPN-CAB-FUSE,,,,
+REG-C-034,SYNTHETIC-PLM-REG-C,35,REG-C,CAB-110,A,CAB-H110,A,component,Cabinet input harness,1,EA,DemoVolt,SYN-MPN-CAB-H110,,,,110
+REG-C-035,SYNTHETIC-PLM-REG-C,36,REG-C,CAB-110,A,CAB-FAN,B,component,Cabinet fan,1,EA,DemoVolt,SYN-MPN-CAB-FAN,,,,24
+REG-C-036,SYNTHETIC-PLM-REG-C,37,REG-C,CAB-110,A,CAB-DIN,A,component,DIN mounting rail,1,EA,MockFix,SYN-MPN-CAB-DIN,500,mm,steel,
+REG-C-037,SYNTHETIC-PLM-REG-C,38,REG-C,CAB-110,A,FIX-M6-20,A,component,M6 mounting bolt,6,EA,MockFix,SYN-MPN-FIX-M6-20,25,mm,steel,
+REG-C-038,SYNTHETIC-PLM-REG-C,39,REG-C,CAB-110,A,FIX-W6,A,component,M6 washer,6,EA,MockFix,SYN-MPN-FIX-W6,,,steel,
+REG-C-039,SYNTHETIC-PLM-REG-C,40,REG-C,CAB-110,A,FIX-N6,A,component,M6 nut,6,EA,MockFix,SYN-MPN-FIX-N6,,,steel,
