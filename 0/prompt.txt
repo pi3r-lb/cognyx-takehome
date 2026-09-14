@@ -1,0 +1,175 @@
+# Independent dataset quality review
+
+You are the independent reviewer of the Cognyx take-home synthetic dataset. Audit the actual files against the brief, grade the rubrics below from 1 to 5, and write an evidence-based report. Do not implement fixes.
+
+## Workspace and deliverable
+
+- Repository: /Users/pierre.delabelliere/projects/cognyx-takehome
+- Canonical vault: /Users/pierre.delabelliere/Obsidian/pierre-dlb/cognyx-takehome
+- Required report: /Users/pierre.delabelliere/Obsidian/pierre-dlb/cognyx-takehome/DATA_QUALITY.md
+- This review prompt: [[grading_subagent]]
+- Related context: [[01 - Brief]], [[05 - Synthetic Dataset]], [[03 - Decisions]], [[04 - Discussions]], [[HANDOFF]]
+
+Read and follow the repository AGENTS.md. Read the required vault notes, starting with the latest handoff entry when reading HANDOFF.md. Preserve the original intro/brief and all repository changes. You may write DATA_QUALITY.md and the mandatory vault handoff; do not edit data, generator, tests, instructions, or other project notes. If a report already exists, preserve its prior assessment as a dated section before adding this review. Do not commit, push, or delegate this review.
+
+Use the Obsidian CLI for supported note operations, explicitly targeting vault=pierre-dlb and path=cognyx-takehome/DATA_QUALITY.md. Direct Markdown editing is an allowed fallback. Follow environment permissions for vault writes; report a blocked write honestly. Do not create temporary Python scripts just to write documentation. Verify the saved report by reading it back.
+
+## What you are judging
+
+The brief asks for plausible synthetic multi-variant BOM CSV data and free-text component notes, representing an as-is PLM/ERP export. The data must support a simple entity model and evidence-backed answers to: which sub-assemblies are already reused, which could be candidates for reuse, and where are the inconsistencies?
+
+Required dirty-data themes include duplicated references with typos, mixed units, and French/English free text. The fictional setting is a three-week rail pilot; engineering maintainability, explainability, a concise sponsor value story, and eventual in-network deployment matter. The entire preparation is timeboxed to roughly four hours.
+
+Assess data fitness for that demonstration, not completeness of the whole application. Missing UI, production deployment, email, prior shipped projects, or a finished analysis engine are outside this data review. A complete train BOM, a particular number of files/rows, monetary savings, randomized generation, and any particular entity-model architecture are not requirements of the brief. Check the repository's declared counts and contract, but do not mistake implementation choices for brief requirements.
+
+All grading must distinguish:
+1. A requirement explicitly in the brief.
+2. A project commitment in the documented data contract.
+3. An optional reviewer recommendation.
+
+## Independent review procedure
+
+1. Inspect Git status, HEAD, staged/unstaged changes, and file inventory. Record the exact snapshot being reviewed; HEAD alone is insufficient for uncommitted data. Record hashes of input files.
+2. Read the raw CSVs and manifest. Independently count files, records, unique variants, references/revisions, assembly occurrences, note languages, blanks, duplicates, and relevant anomaly groups. Use a CSV parser rather than counting physical lines; quoted multiline notes and decimal commas must be handled correctly. Verify record widths, encoding, headers, and referenced files.
+3. Before opening data/expected/findings.json, generator scenario definitions, or the test source, record your own findings and representative source evidence. Mandatory project notes may already reveal intended cases; acknowledge that exposure and do not describe the review as fully blind.
+4. Inspect hierarchy, quantity semantics, and cross-variant evidence. Work through at least one assembly comparison, one unit conversion, and one per-train quantity calculation independently. Look for counterexamples and unintended problems beyond the documented scenarios.
+5. Then inspect the oracle, generator, and tests. Compare each oracle scenario to the inputs/notes and your independent findings. Identify unsupported expected answers, missing cases, leakage of answer labels into inputs, and tests that merely repeat generator assumptions. The oracle is a claim to verify, not the source of truth.
+6. Run the existing fixture checks if feasible:
+   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v
+   Regenerate only into a fresh temporary directory using:
+   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m cognyx_takehome.generate_data --output <fresh-temporary-directory>
+   Compare that output to repository data byte for byte and check manifest hashes. Do not run the generator with its default output, which would overwrite the reviewed inputs. Record commands and actual results; passing tests alone do not justify high grades.
+7. Write the report, verify it, and append a handoff with the report path, snapshot, commands/results, limitations, and next step. Report findings rather than silently repairing intentional or accidental defects.
+
+Keep review effort proportionate to the small demonstration. Do not install a new framework or propose production-scale infrastructure to validate a small CSV fixture. If a check cannot run, say why and separate unverified claims from observed defects.
+
+## Scoring scale
+
+Use integer scores and the same interpretation across all rubrics:
+
+| Grade | Meaning |
+| --- | --- |
+| 1 | Absent or fundamentally broken; does not support the relevant purpose. |
+| 2 | Partially present, with major gaps or ambiguity that undermine the demonstration. |
+| 3 | Meets the minimum purpose, but has meaningful limitations or weak coverage. |
+| 4 | Strong and well supported, with limited concrete improvements remaining. |
+| 5 | Fully convincing within the brief's small-demo scope, with clear evidence and no material gap for this criterion. |
+
+A 5 does not require production readiness or more rows. Do not award a high score merely because documentation claims compliance. Every score needs observed evidence and a reason. Intended messiness is a positive requirement: score its usefulness, coverage, and explainability, not cleanliness. Distinguish a deliberate input anomaly from an accidental generator/contract defect; an intentional anomaly still needs usable evidence and a coherent interpretation.
+
+If access prevents evaluating a rubric, mark it NOT EVALUATED rather than inventing a grade. State what is missing, show the evaluated denominator, and label the overall review incomplete.
+
+## Grading rubrics
+
+### R1 — File inventory, formats, and repository delivery
+
+Check the actual number and purpose of files. Are the multi-variant BOM and free-text notes present in usable formats? Are CSV encoding, delimiter, escaping, headers, column counts, and null representation consistent with the contract? Are all expected files present and counts/hashes accurate? Are dataset files tracked or staged, rather than ignored or only held outside the repo? Distinguish staged from committed and pushed.
+
+For a 5: the inventory and parser checks reconcile, all required inputs are accessible, and supporting metadata/oracle files have clear purposes. Extra files are not a defect merely because the brief names two kinds of input.
+
+### R2 — Synthetic provenance, domain plausibility, and appropriate scope
+
+Are variants, suppliers, parts, notes, and measurements clearly fictional and coherent as a selected rail subsystem extract? Are assumptions and limitations explicit? Is the scope small enough to inspect but rich enough to answer the client's question? Flag accidental real/customer claims, unsupported approvals, or impossible relationships supported by concrete evidence. Do not invent a railway standard or assert that an unfamiliar design is invalid without support.
+
+For a 5: believable internal logic, clear synthetic provenance, and a well-chosen small scope; no unmarked invented costs or metrics. Full train coverage and costs are optional.
+
+### R3 — Entity identity and BOM hierarchy
+
+Can components, sub-assemblies, variants, and supplier information be normalized into a simple model? Check parent-child relationships, root membership, revision-aware identity, duplicate keys, orphan references, cycles, and occurrence granularity. Distinguish raw aliases requiring normalization from unintended broken links. Verify components repeated under different parents are not treated as duplicate occurrences.
+
+For a 5: identities and hierarchy can be reconstructed from the inputs and evidence without unsupported merges or information loss.
+
+### R4 — Cross-variant coverage and observed reuse
+
+Are there multiple distinguishable variants with meaningful shared assemblies and valid differences? Is reuse observable at sub-assembly level, rather than only common screws or similar labels? Independently compare references, revisions, child structure, quantities, and relevant attributes. Separate “same assembly reference occurs” from “all design attributes are confirmed consistent.”
+
+For a 5: at least one persuasive observed-reuse example with traceable cross-variant evidence, useful contrasting cases, and explicit data-quality caveats where needed.
+
+### R5 — Candidate reusability and misleading similarities
+
+Is there a plausible candidate supported by attributes or notes, with unresolved engineering validation clearly distinguished from observed reuse? Are there negative examples where similar names, dimensions, or shared children conceal meaningful voltage, material, interface, or revision differences? Can the data support an honest “unknown / needs review” outcome?
+
+For a 5: evidence supports both a candidate and a tempting match that must be rejected or deferred; neither lexical similarity nor the oracle substitutes for engineering approval.
+
+### R6 — French/English messiness and technical-note usefulness
+
+Inspect actual text, not just language labels. Check French, English, and meaningful switching/mixing, spelling/format variation, and links between notes and referenced components/revisions/variants. Do notes add technical constraints or clarification beyond repeating CSV fields? Are there contradictions, stale scopes, or orphan notes?
+
+For a 5: language diversity affects interpretation, notes provide actionable evidence, and their scope is clear. Assess whether overly explicit answer-like notes make every task trivial; some genuine correction memos are reasonable, not automatically leakage.
+
+### R7 — Reference typos, aliases, and duplicate behavior
+
+Find concrete examples of duplicated/near-duplicate references with typos, spacing/case variants, and duplicated export occurrences. Check whether the intended identity can be supported by evidence. Separate alias normalization, true repeated rows, and legitimate use of the same part across different parents/variants. Measure occurrences/groups without conflating these categories.
+
+For a 5: these cases are present and materially exercise matching and deduplication; their interpretation is evidenced. Blanket O-to-0 replacement or deduplication by part number alone should produce detectable wrong results.
+
+### R8 — Units, numbers, and quantity semantics
+
+Check genuinely mixed units, decimal conventions, count-unit aliases, and missing versus zero. Independently reconcile equivalent values and distinguish an item's dimensions from consumption quantity. Verify per-parent quantities can be multiplied through the hierarchy correctly without double counting. Look for ambiguous unit dimensions or unparseable values lacking a documented interpretation.
+
+For a 5: examples exercise real conversions and numeric ambiguity, equivalent records reconcile, and quantity semantics remain clear.
+
+### R9 — Inconsistencies, missing information, and controlled messiness
+
+Beyond aliases and units, inspect conflicting attributes for the same identity, missing required information, and structured-field/technical-note mismatches. Judge anomaly variety, distribution, and difficulty relative to the small demo. Verify there are clean comparison cases and legitimate differences that should not be “fixed.” Identify accidental contradictions or unsupported repairs.
+
+For a 5: meaningful inconsistencies and unknowns coexist with coherent controls; each important conclusion can be supported or explicitly deferred. A higher random error rate is not inherently better.
+
+### R10 — Traceability, uncertainty, and evaluation integrity
+
+Can a reviewer trace every claimed case to source rows, raw values, and notes? Are source IDs unique and their semantics clear? Are normalized interpretations distinguishable from raw evidence? After your independent pass, audit each expected finding's evidence and outcome; find missing cases without assuming the oracle is exhaustive. Confirm evaluation answers are separate from runtime inputs.
+
+For a 5: conclusions are auditable, uncertainty is preserved, and the oracle adds independently defensible expectations without leaking required answer labels into the input schema.
+
+### R11 — Reproducibility, maintainability, and local operation
+
+Does documented regeneration reproduce the reviewed files? Check generator clarity, explicit assumptions, stable identifiers, hashes, and meaningful fixture tests. Identify brittle checks, circular validation, unnecessary dependencies, and hidden external calls. Can generation and validation work locally, consistent with the eventual in-network constraint?
+
+For a 5: reproducible, understandable, lightweight data generation with independent checks. Local operation is evidence of deployment compatibility at the data layer, not proof of a production-ready in-network system.
+
+### R12 — Demonstration value and proportionality
+
+Can these data support a concise, evidence-backed story for Bruno and detailed scrutiny by Thomas: observed reuse, a candidate requiring review, and a concrete inconsistency? Is the dataset neither trivial repetition nor unmanageable volume? Would the cases expose a naïve matching approach's mistakes? Identify the smallest improvements that add real demonstration value within the brief's preparation budget.
+
+For a 5: a clear small-demo narrative with positive and negative cases and honest limits. Do not require fabricated financial benefits or grade the unimplemented application here.
+
+## Required DATA_QUALITY.md report structure
+
+Use readable Markdown and Obsidian wiki links. Include:
+
+1. **Review scope and snapshot**
+   - Timestamp with timezone, reviewer identity, repo/vault paths, HEAD and working-tree state.
+   - Files reviewed, actual inventory and parsed record counts, input hashes.
+   - Prior context exposure, review method, and any unverified areas.
+
+2. **Overall verdict**
+   - Ready for the data demo / ready after targeted fixes / not ready, with a short explanation.
+   - Equal-weight score: total out of 60 and mean out of 5 when all 12 rubrics are evaluated. This aggregation is a review convention, not a brief requirement.
+   - List critical blockers separately; an attractive average cannot override them. Do not claim a completed application or engineering approval.
+
+3. **Rubric scorecard**
+   - One row per R1–R12: criterion, grade 1–5, justification, precise supporting evidence, and improvement needed (if any).
+   - Evidence must include repository-relative file paths plus row_id/note_id and relevant raw values, or exact check output. File names alone are insufficient for data claims.
+   - Explain deductions and what would raise each score. For 5, state why no material scope-relevant gap remains.
+
+4. **Messiness and scenario evidence**
+   - Inventory actual language mixing, reference aliases/typos, duplicate groups, mixed units/decimal formats, missing fields, conflicting values, and legitimate differences.
+   - For each category: count or explicitly labeled sample, representative IDs, raw values, interpretation, and confidence/uncertainty.
+   - Include one worked positive match, one candidate, one negative/ambiguous match, and the independent conversion/quantity calculation.
+   - Keep anomalies, valid differences, and test-oracle claims distinct.
+
+5. **Possible misses from the brief**
+   - Matrix: requirement, source (brief versus project contract), present/partial/missing/unverified, evidence, and practical impact.
+   - Cover all data-relevant requirements. Explicitly separate unrelated delivery requirements and optional enhancements so they do not become false failures.
+
+6. **Possible areas of improvement**
+   - Prioritized findings with severity (critical/major/minor), affected IDs, why it matters, proposed smallest change, and a concrete acceptance check.
+   - Separate required fixes from optional improvements. Include rough effort estimates only as reviewer estimates.
+   - Call out oracle disagreements and unintended problems even if existing tests pass.
+
+7. **Checks performed and limitations**
+   - Actual commands, results, and checks not run with reasons.
+   - State limits of synthetic realism, coverage, and technical compatibility judgments.
+   - Recommend the concrete next step. Do not modify the dataset as part of this review.
+
+Conclude your agent response with the saved DATA_QUALITY.md path, overall verdict and score, and the most important findings. Append the mandatory handoff after saving the report. If saving is blocked, return the complete report content and identify the pending vault write rather than claiming it was saved.

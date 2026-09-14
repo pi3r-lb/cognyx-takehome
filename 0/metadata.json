@@ -1,0 +1,74 @@
+{
+  "cli_version": "0.10.6",
+  "checkpoint_id": "01M2GACAWS8GP94CVF2YJEN6Q2",
+  "session_id": "3f7d7351-41bf-43bf-8f16-2e95b314956d",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-14T16:00:49.29436Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "AGENTS.md",
+    "README.md",
+    "data/bom.csv",
+    "data/manifest.json",
+    "data/technical_notes.csv",
+    "data/variants.csv",
+    "src/cognyx_takehome/generate_data.py",
+    "tests/test_generated_data.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5",
+  "turn_id": "3f68c2feb3e8",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 58,
+    "cache_creation_tokens": 143502,
+    "cache_read_tokens": 4082935,
+    "output_tokens": 32708,
+    "api_call_count": 29
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-14T16:00:49.251739Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 6,
+    "total_committed": 0,
+    "total_lines_changed": 6,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 1512,
+      "user_lines_removed": 6,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.json": 90,
+        ".codex/hooks.json": 88,
+        ".opencode/plugins/entire.ts": 269,
+        ".pi/extensions/entire/index.ts": 147,
+        "AGENTS.md": 33,
+        "README.md": 36,
+        "data/bom.csv": 119,
+        "data/expected/findings.json": 211,
+        "data/manifest.json": 43,
+        "data/technical_notes.csv": 19,
+        "data/variants.csv": 4,
+        "src/cognyx_takehome/generate_data.py": 282,
+        "tests/test_generated_data.py": 171
+      },
+      "user_removed_per_file": {
+        "AGENTS.md": 4,
+        "README.md": 2
+      }
+    }
+  ]
+}

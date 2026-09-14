@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.10.6",
+  "checkpoint_id": "01M2GACAWS8GP94CVF2YJEN6Q2",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "AGENTS.md",
+    "README.md",
+    "data/bom.csv",
+    "data/manifest.json",
+    "data/technical_notes.csv",
+    "data/variants.csv",
+    "src/cognyx_takehome/generate_data.py",
+    "tests/test_generated_data.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 58,
+    "cache_creation_tokens": 143502,
+    "cache_read_tokens": 4082935,
+    "output_tokens": 32708,
+    "api_call_count": 29
+  }
+}
