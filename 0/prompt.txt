@@ -1,0 +1,4 @@
+/init  So, we'll be working on the take-home project for Cognyx. The goal right now is to set up the repository. You'll have access to the usual skills like GStack, and all the documentations should be put in the Obsidian vault at this specific location: /Users/pierre.delabelliere/Obsidian/pierre-dlb/cognyx-takehome 
+You'll find a brief as well as a quick intro. In this folder, you'll be able to add all the documentation you need. The goal is that all the trade-offs, all the discussions, the technical but also business decisions, are tracked there. Every time you make changes, please state them in a handoff Markdown file that you will have to create. And all agents should work there.
+
+Feel free to ask questions if you need.
