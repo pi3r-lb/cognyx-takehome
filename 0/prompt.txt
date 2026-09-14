@@ -1,0 +1,7 @@
+<environment_context>
+  <cwd>/Users/pierre.delabelliere/projects/cognyx-takehome</cwd>
+  <shell>zsh</shell>
+  <current_date>2026-09-14</current_date>
+  <timezone>Europe/Paris</timezone>
+  <filesystem><workspace_roots><root>/Users/pierre.delabelliere/projects/cognyx-takehome</root></workspace_roots><permission_profile type="managed"><file_system type="restricted"><entry access="read"><special>:root</special></entry><entry access="write"><path>/Users/pierre.delabelliere/projects/cognyx-takehome</path></entry><entry access="write"><special>:slash_tmp</special></entry><entry access="write"><special>:tmpdir</special></entry><entry access="read"><path>/Users/pierre.delabelliere/projects/cognyx-takehome/.git</path></entry><entry access="read"><path>/Users/pierre.delabelliere/projects/cognyx-takehome/.agents</path></entry><entry access="read"><path>/Users/pierre.delabelliere/projects/cognyx-takehome/.codex</path></entry></file_system></permission_profile></filesystem>
+</environment_context>
