@@ -1,0 +1,97 @@
+The ingestion and data-quality foundation is built and pushed. Reuse analysis is the next major layer.
+
+  What works today:
+
+  - CLI: start the Dagster dashboard, ingest BOM + variants, ingest technical notes, inspect status/findings, and rerun reconciliation.
+  - Two SQLite databases: BOM and technical notes stored separately, preserving original values, source files and provenance.
+  - Safe imports: identical reimports add nothing; conflicting records are rejected. --override replaces the selected input family atomically and recalculates derived results.
+  - Normalization and checks: whitespace, numeric formats, units, missing values, conflicting attributes, duplicates, variant roots and BOM graph integrity.
+  - Evidence-backed corrections: lighting O/0 typo, scoped supplier aliases and the documented duplicate. The conflicting bolt length stays unresolved.
+  - Dagster and logging: visible assets/checks, blocking downstream processing on severe errors, persistent run history and rotating JSON logs.
+  - Validation: 34 passing tests, including transactional rollback and Dagster failure gating.
+
+  The supplied data is loaded: 118 BOM rows, 3 variants and 20 notes. Current results: 0 blocking errors, 31 warnings—20 note-extraction coverage warnings, 9 conflicting bolt observations and 2 missing values.
+
+  What isn’t built yet: broad multilingual NLP, sub-assembly comparison, reuse candidate discovery/ranking, or an evidence-linked analysis report. Current note extraction uses narrow, explicit rules; it does not
+  understand every note.
+
+  My recommendation is to build one end-to-end reuse comparison next: identify a donor and target, compare their structures, attach relevant note passages, and explain the candidate’s conditions and unresolved
+  questions.
+
+Here is where we stand.
+
+Next step, next goal that we are going to build (using the $plan-eng-review likely, and also there should arelady be a gstack worskpace for the current project):  The goal now will be to expose an MCP that will be linked to the two databases that we have. Likely, the MCP will have several entry points. So, looking at the brief, we see that the goal is to be able to retrieve different parts and see whether they can be interchanged, whether they can be used with each other. So, the goal for the MCP will be to expose the ability to query the database. For the BOM, for the different parts and the sub-assembly, and also, like, the larger assemblies. So, the search there will be based on references, lots of things like the different fields that you can see in the database, and we'll have to expose that.
+
+And then there'll be a second search, which will be in the technical notes, where you can fetch the technical notes with free-text search on the notes and also on the region of the train, like Reg A, B, C, the three things. Default will be all of them, but we can focus only on one of them. And so the MCP will expose the ability to search those two databases.
+
+We would like also to include the launch of the MCP with the CLI. For instance, with the CLI, we'll be able to call MCP start or something like that, and the MCP will ensure that the databases are not empty, like the data is already ingested and ingested properly. And based on that, you'll be able to retrieve the different rows from the database. We'll then have to explain in the MCP that the first contains the BOM indications, the second the technical notes, and the technical notes are important to understand whatever the changes and the BOM doesn't explain, with the tolerance, with the ability to replace different pieces. And that when giving a recommendation, providing an insight, you always have to quote the notes that you're referring to and the pieces that you're referring to.
+
+And, yes, we'll build this MCP, deploy it with the CLI, like make it available with the CLI locally. And, yeah, well, good. Seems good to me. What do you think? Do you have any questions before moving on to this goal?
+
+---
+
+> D1 — Review the MCP proposal directly, or first develop a separate design brief? Your proposal already describes the purpose, two search surfaces, CLI launch, and citation requirement. I recommend reviewing it directly; a preliminary /office-hours session would explore the product assumptions more deeply but adds another discussion before architecture review. These options differ in process, not coverage. The invoked plan-eng-review skill requires this choice when no feature design document exists.
+
+Review the MCP proposal directly (recommended)
+
+---
+
+> D2 — Architecture issue 1: how should an assistant connect to the local MCP?  Your proposal says “with the CLI, we'll be able to call MCP start.” There are two meanings: the assistant launches that command whenever it needs the tools, or you start a service yourself and give the assistant its URL. Picking the wrong one could leave your intended client unable to connect.  Recommendation: 1A, stdio, for this local demo. It follows your preference for a small, explicit implementation. The official MCP tr
+
+1A — Client-launched stdio (recommended)
+
+---
+
+> D3 — Architecture issue 2: should an open MCP follow refreshed data, or require a restart after an import?  In this project, an import invalidates derived data before reconciliation rebuilds it. Evidence: storage.py:120–124 deletes derived tables including reconciliation and sets eligible=0; storage.py:225 checks stored generations and rule version. This is an existing behavior to account for, not an observed MCP bug. Confidence: 9/10.  Both options would refuse startup on missing/incomplete inputs, sta
+
+2A — Follow current data with version checks (recommended)
+
+---
+
+> D4 — Architecture issue 3: should note search match wording, or meaning across languages?  For example, NOTE-019 describes a “poignée rabattable.” Searching for “folding handle” would not find that French wording through literal text matching. Your requirement says “free-text search,” which could mean either behavior. A zero-result search must not be mistaken for proof that no relevant restriction exists. Confidence: 9/10; the French text is present in data/technical_notes.csv:20, while notes
+
+3A — Keyword search with bilingual query terms (recommended)
+
+---
+
+> D5 — Architecture issue 4: what does a note’s variant filter select?  NOTE-018 is labelled REG-C, yet says “REG-A/B exigent au moins 1500 lm et un indice au plus 22.” A strict REG-A filter excludes this note even though it contains relevant requirements. A mention-based filter includes it, but mentioning a variant does not establish that the entire note applies to it. Evidence: data/technical_notes.csv:19 and pipeline.py:29–31; confidence 10/10.  Recommendation: 4A, filter by the declared variant 
+
+4A — Declared variant only; all variants by default (recommended)
+
+---
+
+> D6 — Architecture issue 5: should assembly retrieval include BOM rows with unresolved warnings?  The existing eligible_bom_rows view selects only included rows whose quality_status is 'checked' (storage.py:92–94). Using it for retrieval would omit the conflicting bolt observations and missing-value rows. An assistant could then mistake a shortened assembly for its complete structure. Confidence: 9/10, verified against the view and quality.py:148–160, which deliberately preserves conflicting observatio
+
+5A — Include warned rows with evidence (recommended)
+
+---
+
+> D7 — Test issue 1: include an assistant evaluation of the citation and uncertainty instructions?  Your requirement is that recommendations always quote the relevant notes and parts. The MCP can return exact evidence and instruct a client to cite it, but it cannot control arbitrary prose the client writes afterward. A protocol test passing does not prove the assistant followed those instructions. Confidence: 9/10; the planned server supplies tools and evidence, while the consuming assistant produces the fi
+
+Not in scope here
+
+---
+
+once that is good, set⡀yourself up with a /goal
+
+---
+
+GOOOO!!!!!
+
+---
+
+Come on, run full auto
+
+---
+
+I NEED to let you handle the build AUTONOMOUSLY. Is there anything still you need me to approve (commands, anything else) ?
+If yes, DO IT NOW.
+If no, continue.
+
+---
+
+Anything else ?
+
+---
+
+bon ca marche ?
