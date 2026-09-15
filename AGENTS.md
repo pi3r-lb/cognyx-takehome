@@ -8,10 +8,10 @@ them, and explains sub-assembly reuse opportunities and data inconsistencies.
 The brief recommends no more than four hours of preparation. Favor a working,
 well-prioritized demonstration with evidence and clear limitations.
 
-The repository contains a Python scaffold plus reproducible synthetic CSV data
-and fixture checks. The main command still prints a greeting; ingestion,
-normalization, and reuse analysis are not implemented. Do not describe planned
-capabilities as shipped.
+The repository contains a working local Dagster ingestion pipeline, two SQLite
+application stores, evidence-preserving normalization/corrections, quality checks,
+CLI commands, logging, synthetic CSV fixtures and integration tests. Reuse analysis
+and general NLP are not implemented. Do not describe planned capabilities as shipped.
 
 ## Documentation is in Obsidian
 
@@ -90,18 +90,26 @@ claim it was saved.
 - Inspect the working tree before editing; preserve existing user changes.
 - Keep changes small and inspectable, and record material AI-assisted choices.
 - Follow the existing Python package layout under `src/cognyx_takehome/`.
-- The scaffold pins Python 3.9 in `.python-version`, declares Python >=3.9,
-  and uses `uv_build`. Revisit runtime/tooling choices explicitly before changing them.
-- The current scaffold smoke check is:
-  `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -c 'from cognyx_takehome import main; main()'`.
-- Once dependencies are installed with `uv sync`, the declared entry point is
-  `uv run cognyx-takehome`. Do not treat an import smoke check as packaging validation.
+- The project pins Python 3.12, declares >=3.12,<3.15, and uses `uv_build`.
+  Dagster and dagster-webserver are pinned; commit `uv.lock` with dependency changes.
+- Install with `uv sync --locked`; smoke-check the installed CLI with
+  `uv run cognyx-takehome --help` and `uv run cognyx-takehome status`.
+  Validate packaging with `uv build`, not only an import check.
+- See README.md for ingest/server/reconcile commands. The local application stores
+  are `.local/cognyx/bom.db` and `technical_notes.db`; Dagster metadata/logs are
+  separate beneath that directory. Runtime files must stay untracked.
 - Generate the checked-in synthetic fixtures with:
-  `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m cognyx_takehome.generate_data`.
-- Run fixture contract checks with:
-  `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v`.
-  These verify data generation and scenarios, not a shipped analysis engine.
-  No lint configuration exists yet.
+  `uv run python -m cognyx_takehome.generate_data`.
+- Run all tests with `uv run --locked python -m unittest discover -s tests -v`.
+  Fixture tests validate authored scenarios; ingestion tests use temporary SQLite
+  stores; Dagster tests exercise real checks, failures and downstream gating.
+  No reuse-analysis engine or lint configuration exists yet.
+- Keep raw inputs immutable. Apply corrections only in derived rows with rule
+  and source evidence. Full-note extraction templates are deliberately bounded.
+  Default append must not silently count re-exports; override replaces one family
+  atomically and invalidates derived state across both stores.
+- Distinguish completed imports, incomplete reconciliation, unresolved WARN findings,
+  and blocking ERROR checks. A successful run does not mean engineering approval.
 - `data/manifest.json` defines CSV and quantity semantics. Keep the raw input
   files separate from `data/expected/findings.json`, which is an evaluation oracle
   and must never be an input to the future analyzer.

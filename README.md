@@ -1,83 +1,120 @@
 # Cognyx take-home
 
-A take-home project exploring sub-assembly reuse across train variants using
-synthetic bill-of-materials data and technical notes.
+A local Dagster pipeline that imports synthetic multi-variant BOM data and bilingual
+technical notes into **two SQLite databases**, normalizes supported values, and
+records quality findings with source evidence. Python 3.12 and `uv` are required.
 
-**Status:** reproducible synthetic data and fixture checks are available. The main
-console command still prints a greeting; ingestion, normalization, and reuse
-analysis are not implemented yet.
+## Run the demo
 
-## Synthetic pilot data
-
-The checked-in [data](data/) covers three fictional train variants and selected
-cabin-lighting, HVAC-filter, and passenger-information assemblies:
-
-- [bom.csv](data/bom.csv): 118 raw parent-child records with stable source IDs.
-- [technical_notes.csv](data/technical_notes.csv): 20 French, English, and mixed notes.
-- [variants.csv](data/variants.csv): three variant roots and the snapshot scope.
-- [manifest.json](data/manifest.json): provenance, field semantics, counts, and hashes.
-- [expected/findings.json](data/expected/findings.json): 21 evaluation scenarios;
-  **never use this answer key as analyzer input**.
-
-Version 2 focuses on **finding new uses for existing designs**. There are eight
-distinct assembly designs across nine variant placements. Only LGT-100 is already
-shared (REG-A/B, with a reference typo in B). Four directional candidate comparisons
-ask whether an existing donor could replace a different design at a future tender:
-
-| Existing donor | Target | Evidence and outstanding check |
-| --- | --- | --- |
-| LGT-200 on REG-C | LGT-100 on REG-A/B | Same mount/supply, different diffuser; verify target-interior photometry. |
-| FLT-150 on REG-B | FLT-100 on REG-A | Same filter/interface, folding handle; verify maintenance handling. |
-| FLT-200 on REG-C | FLT-100 on REG-A | Cold-rated cassette covers the nominal temperature need; verify target-duct airflow/sealing. |
-| CAB-240 on REG-A | CAB-245 on REG-B | Same electrical interface, sealed versus vented door; verify thermal behavior in the hotter target bay. |
-
-These are unapproved engineering-review candidates, not aliases to merge. Reverse
-substitution can fail on glare, clearance, temperature, or door requirements. The
-110 V cabinet remains a negative example against the 24 V designs. All designs
-already exist on their listed variants; novelty is their proposed use elsewhere.
-
-All names, identifiers, dimensions, and technical statements are invented; these
-are not Alstom data or validated engineering designs. The data intentionally mixes
-reference typos, units, decimal formats, duplicate rows, missing values, and a
-conflicting dimension. It also includes valid differences that must remain:
-voltage, revision, and material. Observed reuse is distinct from a candidate
-requiring engineering approval. No costs or savings are asserted.
-
-CSV files are UTF-8 with comma delimiters and headers. Quantities are **per parent**;
-train-level counts multiply child quantities. Blank quantities mean unknown.
-The generator uses only the Python 3.9 standard library and runs offline:
+From the repository root:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m cognyx_takehome.generate_data
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v
+uv sync --locked
+uv run cognyx-takehome ingest bom data/bom.csv --variants data/variants.csv
+uv run cognyx-takehome ingest technical-notes data/technical_notes.csv
+uv run cognyx-takehome server
 ```
 
-Regeneration replaces the named dataset files deterministically. Use
-`--output /tmp/cognyx-data-preview` to generate a separate copy. Fixture checks
-verify reproducibility, source links, hierarchy, and the authored scenarios;
-they do not validate an analysis engine.
+Open **http://127.0.0.1:3000**. In **Catalog**, inspect `reconciled` → **Checks** for
+rule results and source evidence. The `reference_alias` and `duplicate_occurrence`
+checks show supported corrections; `missing_values`, `attribute_conflicts`, and
+`extraction_coverage` retain warnings. **Runs** shows CLI and dashboard executions.
+The `ingest_all` job can run the complete fixture import from the dashboard.
 
-## Scaffold check
-
-From the repository root with Python 3.9 or later:
+The server runs in the foreground; stop it with Ctrl-C. CLI imports also work
+without the server. Both use the same persistent Dagster instance. To use another
+workspace, pass `--data-dir /path/to/workspace` to every command (including server).
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -c 'from cognyx_takehome import main; main()'
+uv run cognyx-takehome status
+uv run cognyx-takehome findings
+uv run cognyx-takehome reconcile
+# Replace only BOM + variant inputs, preserving technical notes:
+uv run cognyx-takehome ingest bom data/bom.csv --variants data/variants.csv --override
 ```
 
-Expected output: `Hello from cognyx-takehome!`
+Default ingestion adds new records and skips identical records. Reused source IDs
+with changed values fail explicitly. `--override` atomically replaces the selected
+input family; raw source files remain archived in the import history. Empty or
+malformed inputs cannot wipe the active dataset. Replacement invalidates and
+rebuilds derived results, including corrections whose supporting notes disappeared.
+Domain-invalid values remain in raw storage with findings. Blocking check failures
+make the command exit nonzero; warnings do not. Notes-first ingestion is supported
+and reports incomplete readiness until BOM inputs arrive.
 
-The package declares a `cognyx-takehome` console command and uses `uv_build`.
-Dependency installation and the installed command have not yet been validated.
+## Local outputs
 
-## Working on the project
+All runtime files are ignored by Git under `.local/cognyx/`:
 
-All agents follow [AGENTS.md](AGENTS.md). Decisions, discussions, technical and
-business documentation, and the change-by-change `HANDOFF.md` live in the local
-Obsidian directory:
+| File | Content |
+| --- | --- |
+| `bom.db` | Raw BOM/variants, normalized parts and occurrences, corrections, findings, reconciliation versions |
+| `technical_notes.db` | Raw notes, bounded extracted claims with exact text spans, links and findings |
+| `logs/ingestion.jsonl` | Rotating JSON logs: UTC time, run ID, event, source hash, counts, duration and failures |
+| `dagster/` | Dagster configuration, run/event history and compute logs |
 
-`/Users/pierre.delabelliere/Obsidian/pierre-dlb/cognyx-takehome`
+Original source bytes, raw spellings, CSV positions and import provenance remain
+available. `bom_rows` includes every normalized occurrence and its review status.
+`included=0` identifies the evidenced export duplicate. `eligible_bom_rows` excludes
+flagged occurrences and is empty while inputs are incomplete or blocking errors
+exist. It is a data-quality convenience view, **not an engineering approval**.
 
-Start with `02 - Project Hub.md` there. This private vault is not included in the
-repository; evaluator-facing setup, examples, and the shareable AI-work trace will
-be completed with the demo.
+To inspect a correction directly:
+
+```sh
+sqlite3 .local/cognyx/bom.db "SELECT row_id,field,original_value,normalized_value,evidence_json FROM corrections WHERE rule='reference_alias';"
+```
+
+## What is demonstrated
+
+The fixtures contain 118 BOM rows, three variants and 20 French/English/mixed notes.
+The pipeline preserves all raw rows and excludes one documented duplicate from
+117 included occurrences. It resolves the 13-row lighting-reference alias only
+with matching note/revision/manufacturer evidence, normalizes decimal commas and
+units, and preserves legitimate uses of the same part under different parents.
+
+A blank quantity stays unknown. The 25 mm versus 20 mm bolt conflict remains
+unresolved. Fan revisions remain separate. Case-equivalent supplier spelling is
+corrected only where explicit scoped evidence supports it. Unsupported O/0 matches
+are suggestions, never automatic substitutions.
+
+Note extraction recognizes a small set of **whole, explicit declaration templates**
+and retains contextual passages. Every note is marked partial or unprocessed;
+this is not general NLP. Negated/qualified correction prose is not executed.
+Numerics accept decimal dot/comma with up to 18 digits; unsupported forms are
+flagged. Normalized decimal values use exact text storage in SQLite and Python
+`Decimal` arithmetic. Quantity units and component dimensions are independent.
+
+All engineering data is invented. The fixture describes reuse candidates, but
+**reuse ranking and engineering compatibility analysis are not implemented**.
+The evaluation oracle at `data/expected/findings.json` is used only by fixture tests,
+never by the ingestion runtime. See `data/manifest.json` for source semantics.
+
+## Verification and AI-work trace
+
+```sh
+uv run --locked python -m unittest discover -s tests -v
+uv build
+uv run python -m cognyx_takehome.generate_data --output /tmp/cognyx-data-preview
+```
+
+Tests cover fixture reproducibility, raw preservation, unit/identity checks,
+transaction rollback, idempotency, import order, evidence removal, misleading note
+text, re-export duplication, and real Dagster checks blocking downstream execution.
+The package wheel and source distribution build locally. Tested on macOS ARM64;
+production deployment and other platforms are unverified.
+
+Codex implemented the pipeline from the user-approved design with GStack planning
+and review guidance. An independent review found correction-context, re-export,
+incomplete-input and unit-consistency defects; regression tests cover their fixes.
+The source, tests and this account provide a shareable trace. Detailed design,
+decisions, review results and handoffs live in the canonical Obsidian project vault;
+all agents follow [AGENTS.md](AGENTS.md).
+
+Runtime uses local files and no cloud NLP service. The generated Dagster instance
+configuration disables telemetry and the dashboard binds to loopback. This local
+development setup is not a production deployment: authentication, access controls,
+backup/migration operations, network-isolation validation and multi-user operation
+remain future work. Use local disk, not a network filesystem, for attached SQLite
+transactions. Dagster owns its own metadata databases in addition to the two
+application databases above.

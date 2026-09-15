@@ -1,10 +1,10 @@
 [project]
 name = "cognyx-takehome"
 version = "0.1.0"
-description = "Add your description here"
+description = "Local evidence-preserving BOM and technical-note ingestion"
 readme = "README.md"
-requires-python = ">=3.9"
-dependencies = []
+requires-python = ">=3.12,<3.15"
+dependencies = ["dagster==1.13.22", "dagster-webserver==1.13.22"]
 
 [project.scripts]
 cognyx-takehome = "cognyx_takehome:main"

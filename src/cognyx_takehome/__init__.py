@@ -1,2 +1,6 @@
+"""Cognyx local ingestion demonstration."""
+
+
 def main() -> None:
-    print("Hello from cognyx-takehome!")
+    from .cli import main as cli_main
+    cli_main()
