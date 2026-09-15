@@ -1,0 +1,12 @@
+what was the proposed data structure before i mentionned sqlite ?
+
+ BOM + variants CSV ──→ raw BOM tables ──┐
+                                        ├─→ normalization + findings ─→ analysis
+  Technical notes CSV ─→ raw notes table ┘
+
+Looks good to me actually. 
+Given the technical notes are in NLP and messy, that's why i suggested to have/use 2 different clean db so we can chose how we merge them for the findings afterwards. But still, if you have a clear path for normalization and merge, happy to hear about it.
+
+---
+
+Ok. go for it. Use the $gstack to plan the execution, execute it and review it.
