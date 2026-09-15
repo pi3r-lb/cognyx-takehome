@@ -2,7 +2,8 @@
 
 A local Dagster pipeline that imports synthetic multi-variant BOM data and bilingual
 technical notes into **two SQLite databases**, normalizes supported values, and
-records quality findings with source evidence. Python 3.12 and `uv` are required.
+records quality findings with source evidence. A read-only local MCP exposes BOM
+and note retrieval to compatible agents. Python 3.12 and `uv` are required.
 
 ## Run the demo
 
@@ -41,6 +42,99 @@ rebuilds derived results, including corrections whose supporting notes disappear
 Domain-invalid values remain in raw storage with findings. Blocking check failures
 make the command exit nonzero; warnings do not. Notes-first ingestion is supported
 and reports incomplete readiness until BOM inputs arrive.
+
+## Connect an agent to the MCP
+
+The agent must support **local stdio MCP servers** and run on a machine with
+access to this checkout and its databases. The agent starts the server itself:
+there is no HTTP URL, port or separate terminal process to keep running.
+The Dagster dashboard does not need to be running.
+
+First, from the repository root, install the CLI and check the data:
+
+```sh
+uv sync --locked
+uv run --locked cognyx-takehome status
+```
+
+If data has not been loaded, run the two ingestion commands under
+[Run the demo](#run-the-demo). Startup requires both input families, current
+reconciliation and no blocking errors. Warnings are allowed and returned with
+the evidence.
+
+### Codex
+
+From the repository root, register the server:
+
+```sh
+codex mcp add cognyx -- "$PWD/.venv/bin/cognyx-takehome" \
+  mcp start --data-dir "$PWD/.local/cognyx"
+codex mcp list
+```
+
+This stores absolute paths, so later agent sessions can start from another
+directory. Restart the agent/session after adding the server; in the Codex
+terminal UI, use `/mcp` to check the connection.
+See the [official Codex MCP setup documentation](https://developers.openai.com/codex/mcp/).
+
+### Claude Code
+
+From the repository root, register the server for this project:
+
+```sh
+claude mcp add --transport stdio --scope local cognyx -- \
+  "$PWD/.venv/bin/cognyx-takehome" mcp start \
+  --data-dir "$PWD/.local/cognyx"
+claude mcp get cognyx
+```
+
+The `local` scope keeps the configuration private to you and available in this
+project. Use `--scope user` instead if you want it available in all your projects.
+Start a new Claude Code session in this repository and use `/mcp` to check the
+connection. See the [official Claude Code MCP setup documentation](https://code.claude.com/docs/en/mcp).
+
+Both examples use absolute paths and the macOS/Linux virtual-environment layout;
+Windows is not validated.
+
+### Verify and use the connection
+
+Ask the agent: **“Use the cognyx MCP to call get_dataset_info and list the variants.”**
+With the supplied fixture, expect 118 raw BOM rows, 20 notes and three variants.
+The server exposes six tools:
+
+| Tool | Purpose |
+| --- | --- |
+| `get_dataset_info` | Dataset version, variants, quality counts and supported filters |
+| `search_bom` | Search part occurrences by keywords and structured fields |
+| `get_bom_row` | Original/normalized values, corrections and source evidence for one row |
+| `get_assembly` | Assembly or train-root structure for an exact variant/reference/revision |
+| `search_notes` | Original-note keyword search, optionally filtered by declared variant |
+| `get_note` | Exact original note text, in bounded segments with source citations |
+
+Example prompt:
+
+> Use the cognyx MCP to investigate whether FLT-150 revision A from REG-B could
+> be a reuse candidate for REG-A. Start with get_dataset_info and pass its
+> dataset_version as expected_version in subsequent calls. Retrieve the BOM
+> structures and technical notes across all variants; search French and English
+> terms where needed. Cite BOM row IDs and exact note passages. Separate observed
+> facts, conditions and unresolved checks; do not claim engineering approval.
+
+Note search matches literal keywords, ignoring case and accents; it does not
+translate. A variant filter selects the note's declared variant, so leave it
+unset when collecting cross-variant evidence. Follow pagination/text-segment
+continuations and preserve warnings.
+
+If the connection fails, check executable/data paths and the client's server
+stderr. `DATABASE_UNAVAILABLE` means the stores cannot be read;
+`NOT_READY` means inputs, reconciliation or blocking findings need attention.
+After correcting the inputs, run `uv run --locked cognyx-takehome reconcile`.
+`DATASET_CHANGED` means the agent must fetch a new version and restart its
+comparison. Running `mcp start` manually may appear idle: it is waiting for MCP
+messages, not presenting an interactive shell.
+
+The server reads locally and makes no model calls. Retrieved evidence is passed
+to the chosen agent and is subject to that agent's data-handling configuration.
 
 ## Local outputs
 

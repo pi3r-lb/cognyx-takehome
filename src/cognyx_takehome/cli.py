@@ -30,6 +30,10 @@ def parser():
     commands = root.add_subparsers(dest="command", required=True)
     server = commands.add_parser("server", help="Start the local Dagster dashboard (foreground).")
     server.add_argument("--port", type=int, default=3000)
+    mcp = commands.add_parser("mcp", help="Read-only BOM and notes MCP for local assistants.")
+    mcp_commands = mcp.add_subparsers(dest="mcp_command", required=True)
+    mcp_start = mcp_commands.add_parser("start", help="Serve MCP over stdio; the client owns this process.")
+    mcp_start.add_argument("--data-dir", default=argparse.SUPPRESS)
     ingest_parser = commands.add_parser("ingest", help="Add inputs; identical records are skipped.")
     inputs = ingest_parser.add_subparsers(dest="kind", required=True)
     for kind in ("bom", "technical-notes"):
@@ -50,6 +54,11 @@ def parser():
 
 def main():
     args = parser().parse_args()
+    if args.command == "mcp":
+        # MCP stdout is protocol-only; do not initialize Dagster or create stores.
+        from .mcp import serve
+        serve(args.data_dir)
+        return
     directory = runtime(args.data_dir)
     if args.command in {"status", "findings"}:
         snapshot = status(directory)

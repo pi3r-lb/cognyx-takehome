@@ -218,19 +218,23 @@ def ingest(directory, kind, path, variants_path=None, override=False, run_id="ma
 
 
 def status(directory):
-    with database(directory) as db:
-        with transaction(db):
-            gen = generations(db)
-            rec = db.execute("SELECT * FROM reconciliation").fetchone()
-            current = bool(rec and (rec["bom_generation"], rec["notes_generation"]) == gen and rec["rule_version"] == RULE_VERSION)
-            counts = {name: db.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] for name, table in {
-                "raw_bom_rows": "raw_bom_rows", "variants": "raw_variants", "raw_notes": "notes.raw_notes",
-                "normalized_bom_rows": "bom_rows", "included_bom_rows": "bom_rows WHERE included=1",
-                "eligible_bom_rows": "eligible_bom_rows", "corrections": "corrections", "claims": "notes.claims",
-                "note_links": "notes.links"}.items()}
-            findings = [dict(r) for r in db.execute("SELECT 'bom' AS store,* FROM findings UNION ALL SELECT 'notes' AS store,* FROM notes.findings")]
-            return {"directory": str(Path(directory).resolve()), "generations": gen, "reconciliation_current": current,
-                    "inputs_complete": bool(counts["raw_bom_rows"] and counts["raw_notes"] and counts["variants"]),
-                    "counts": counts, "unresolved_errors": sum(f["severity"] == "ERROR" and f["status"] == "open" for f in findings),
-                    "unresolved_warnings": sum(f["severity"] == "WARN" and f["status"] == "open" for f in findings),
-                    "findings": findings}
+    with database(directory) as db, transaction(db):
+        return status_from_connection(db, directory)
+
+
+def status_from_connection(db, directory):
+    """Inspect within the caller's transaction; also used by read-only MCP queries."""
+    gen = generations(db)
+    rec = db.execute("SELECT * FROM reconciliation").fetchone()
+    current = bool(rec and (rec["bom_generation"], rec["notes_generation"]) == gen and rec["rule_version"] == RULE_VERSION)
+    counts = {name: db.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] for name, table in {
+        "raw_bom_rows": "raw_bom_rows", "variants": "raw_variants", "raw_notes": "notes.raw_notes",
+        "normalized_bom_rows": "bom_rows", "included_bom_rows": "bom_rows WHERE included=1",
+        "eligible_bom_rows": "eligible_bom_rows", "corrections": "corrections", "claims": "notes.claims",
+        "note_links": "notes.links"}.items()}
+    findings = [dict(r) for r in db.execute("SELECT 'bom' AS store,* FROM findings UNION ALL SELECT 'notes' AS store,* FROM notes.findings")]
+    return {"directory": str(Path(directory).resolve()), "generations": gen, "reconciliation_current": current,
+            "inputs_complete": bool(counts["raw_bom_rows"] and counts["raw_notes"] and counts["variants"]),
+            "counts": counts, "unresolved_errors": sum(f["severity"] == "ERROR" and f["status"] == "open" for f in findings),
+            "unresolved_warnings": sum(f["severity"] == "WARN" and f["status"] == "open" for f in findings),
+            "findings": findings}
