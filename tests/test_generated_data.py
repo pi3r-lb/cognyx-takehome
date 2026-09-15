@@ -58,7 +58,7 @@ class GeneratedDataTests(unittest.TestCase):
     def test_inventory_and_source_references(self):
         self.assertEqual(len(self.rows), 118)
         self.assertEqual(Counter(r["variant_id"] for r in self.rows), {"REG-A": 39, "REG-B": 40, "REG-C": 39})
-        self.assertEqual(len(self.notes), 18)
+        self.assertEqual(len(self.notes), 20)
         self.assertEqual(len({r["row_id"] for r in self.rows}), len(self.rows))
         self.assertEqual(len({(r["source_export_id"], r["source_line"]) for r in self.rows}), len(self.rows))
         self.assertEqual({n["language"] for n in self.notes}, {"en", "fr", "mixed"})
@@ -91,8 +91,8 @@ class GeneratedDataTests(unittest.TestCase):
         row_ids = {r["row_id"] for r in self.rows}
         note_ids = {n["note_id"] for n in self.notes}
         findings = self.oracle["findings"]
-        self.assertEqual(len(findings), 16)
-        self.assertEqual(len({f["finding_id"] for f in findings}), 16)
+        self.assertEqual(len(findings), 21)
+        self.assertEqual(len({f["finding_id"] for f in findings}), 21)
         for finding in findings:
             self.assertTrue(set(finding["row_ids"]) <= row_ids)
             self.assertTrue(set(finding["note_ids"]) <= note_ids)
@@ -108,16 +108,16 @@ class GeneratedDataTests(unittest.TestCase):
         b = self.select("REG-B", "LGT-100", "CBL-2C")[0]
         self.assertEqual((a["uom"], b["uom"]), ("M", "mm"))
         self.assertEqual(number(a["quantity"]), number(b["quantity"]) / 1000)
-        frame = self.select("REG-B", "FLT-100", "FLT-FRAME")[0]
+        frame = self.select("REG-B", "FLT-150", "FLT-FRAME")[0]
         self.assertEqual(number(frame["length"]) * 1000, Decimal("600"))
         self.assertEqual(frame["quantity"], "1")
         self.assertEqual(frame["uom"], "pcs")
-        self.assertEqual(number(self.select("REG-B", "FLT-100", "FLT-GASK-EP")[0]["quantity"]), Decimal("2.4"))
+        self.assertEqual(number(self.select("REG-B", "FLT-150", "FLT-GASK-EP")[0]["quantity"]), Decimal("2.4"))
 
     def test_lighting_design_is_shared_after_evidenced_normalization(self):
         def signature(variant):
             result = []
-            for r in self.select(variant, "LGT-100"):
+            for r in self.select(variant, "LGT-200" if variant == "REG-C" else "LGT-100"):
                 qty, uom = number(r["quantity"]), r["uom"].lower()
                 if uom == "mm":
                     qty, uom = qty / 1000, "m"
@@ -126,7 +126,8 @@ class GeneratedDataTests(unittest.TestCase):
                 result.append((r["item_ref"], r["item_revision"], qty, uom, r["manufacturer_part_number"]))
             return sorted(result)
         self.assertEqual(signature("REG-A"), signature("REG-B"))
-        self.assertEqual(signature("REG-A"), signature("REG-C"))
+        self.assertNotEqual(signature("REG-A"), signature("REG-C"))
+        self.assertEqual(len(set(signature("REG-C")) - set(signature("REG-A"))), 1)
         raw_b = self.select("REG-B", item="LGT-100")[0]["item_ref"]
         self.assertEqual(raw_b, " LGT-1O0 ")
 
@@ -141,6 +142,53 @@ class GeneratedDataTests(unittest.TestCase):
         self.assertEqual(cab_a["length"], cab_c["length"])
         self.assertEqual((cab_a["voltage_v"], cab_c["voltage_v"]), ("24", "110"))
         self.assertEqual(next(f for f in self.oracle["findings"] if f["finding_id"] == "F06")["approval_status"], "not_approved")
+
+    def test_opportunities_are_distinct_existing_designs_not_aliases(self):
+        assemblies = [r for r in self.rows if r["item_type"] == "assembly"]
+        used_in = defaultdict(set)
+        for row in assemblies:
+            used_in[ref(row["item_ref"])].add(row["variant_id"])
+        self.assertEqual(len(assemblies), 9)
+        self.assertEqual(len(used_in), 8)
+        self.assertEqual({key for key, variants in used_in.items() if len(variants) > 1}, {"LGT-100"})
+        candidates = [f for f in self.oracle["findings"] if f["category"] == "candidate_reuse"]
+        self.assertEqual(len(candidates), 4)
+        for candidate in candidates:
+            donor, target = candidate["donor_ref"], candidate["target_ref"]
+            self.assertNotEqual(donor, target)
+            self.assertIn(candidate["donor_variant"], used_in[donor])
+            self.assertTrue(set(candidate["target_variants"]) <= used_in[target])
+            self.assertFalse(set(candidate["target_variants"]) & used_in[donor])
+            self.assertEqual(candidate["approval_status"], "not_approved")
+            self.assertTrue(candidate["required_checks"])
+            target_variant = candidate["target_variants"][0]
+            donor_parts = {r["item_ref"] for r in self.select(candidate["donor_variant"], donor)}
+            target_parts = {r["item_ref"] for r in self.select(target_variant, target)}
+            self.assertNotEqual(donor_parts, target_parts, "renaming an identical BOM is not this fixture's opportunity")
+
+    def test_substitution_conditions_are_directional_and_evidenced(self):
+        findings = {f["finding_id"]: f for f in self.oracle["findings"]}
+        for forward, reverse in (("F01", "F18"), ("F15", "F20"), ("F16", "F21")):
+            candidate, rejected = findings[forward], findings[reverse]
+            self.assertEqual(candidate["donor_ref"], rejected["target_ref"])
+            self.assertEqual(candidate["target_ref"], rejected["donor_ref"])
+            self.assertEqual(rejected["category"], "incompatible_near_match")
+        notes = {n["note_id"]: n["text"] for n in self.notes}
+        # Independent threshold/clearance witnesses in the raw notes. These are
+        # authored engineering assumptions, not a production compatibility check.
+        self.assertIn("glare index 21", notes["NOTE-001"])
+        self.assertIn("indice au plus 19", notes["NOTE-018"])
+        self.assertIn("de 35 mm", notes["NOTE-004"])
+        self.assertIn("disponible 20 mm", notes["NOTE-019"])
+        self.assertIn("-10 à +45", notes["NOTE-004"])
+        self.assertIn("down to -25", notes["NOTE-006"])
+        self.assertIn("requires a sealed door", notes["NOTE-009"])
+        self.assertIn("permits either door", notes["NOTE-020"])
+        self.assertIn("only at 35 C", notes["NOTE-020"])
+        self.assertIn("reaches 45 C", notes["NOTE-020"])
+        alias = findings["F02"]
+        self.assertEqual(len(alias["row_ids"]), 13)
+        self.assertEqual(len([f for f in findings.values() if f["category"] == "observed_reuse"]), 1)
 
     def test_missing_values_conflicts_and_revisions_remain_visible(self):
         self.assertEqual(self.select("REG-B", item="CAB-TERM")[0]["quantity"], "")
@@ -157,7 +205,7 @@ class GeneratedDataTests(unittest.TestCase):
         ignored = {"row_id", "source_line"}
         signatures = Counter(tuple((k, v) for k, v in r.items() if k not in ignored) for r in self.rows)
         self.assertEqual(sorted(v for v in signatures.values() if v > 1), [2])
-        latches = self.select("REG-B", "FLT-100", "FLT-LATCH")
+        latches = self.select("REG-B", "FLT-150", "FLT-LATCH")
         self.assertEqual(len(latches), 2)
         self.assertEqual({r["quantity"] for r in latches}, {"2"})
         root_rows = self.select("REG-A", "SYN-TRAIN-A")

@@ -13,11 +13,28 @@ The checked-in [data](data/) covers three fictional train variants and selected
 cabin-lighting, HVAC-filter, and passenger-information assemblies:
 
 - [bom.csv](data/bom.csv): 118 raw parent-child records with stable source IDs.
-- [technical_notes.csv](data/technical_notes.csv): 18 French, English, and mixed notes.
+- [technical_notes.csv](data/technical_notes.csv): 20 French, English, and mixed notes.
 - [variants.csv](data/variants.csv): three variant roots and the snapshot scope.
 - [manifest.json](data/manifest.json): provenance, field semantics, counts, and hashes.
-- [expected/findings.json](data/expected/findings.json): 16 evaluation scenarios;
+- [expected/findings.json](data/expected/findings.json): 21 evaluation scenarios;
   **never use this answer key as analyzer input**.
+
+Version 2 focuses on **finding new uses for existing designs**. There are eight
+distinct assembly designs across nine variant placements. Only LGT-100 is already
+shared (REG-A/B, with a reference typo in B). Four directional candidate comparisons
+ask whether an existing donor could replace a different design at a future tender:
+
+| Existing donor | Target | Evidence and outstanding check |
+| --- | --- | --- |
+| LGT-200 on REG-C | LGT-100 on REG-A/B | Same mount/supply, different diffuser; verify target-interior photometry. |
+| FLT-150 on REG-B | FLT-100 on REG-A | Same filter/interface, folding handle; verify maintenance handling. |
+| FLT-200 on REG-C | FLT-100 on REG-A | Cold-rated cassette covers the nominal temperature need; verify target-duct airflow/sealing. |
+| CAB-240 on REG-A | CAB-245 on REG-B | Same electrical interface, sealed versus vented door; verify thermal behavior in the hotter target bay. |
+
+These are unapproved engineering-review candidates, not aliases to merge. Reverse
+substitution can fail on glare, clearance, temperature, or door requirements. The
+110 V cabinet remains a negative example against the 24 V designs. All designs
+already exist on their listed variants; novelty is their proposed use elsewhere.
 
 All names, identifiers, dimensions, and technical statements are invented; these
 are not Alstom data or validated engineering designs. The data intentionally mixes

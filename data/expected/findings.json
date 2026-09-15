@@ -1,0 +1,365 @@
+{
+  "data_status": "synthetic",
+  "purpose": "Evaluation oracle only; never an analyzer input",
+  "exhaustive": false,
+  "findings": [
+    {
+      "finding_id": "F01",
+      "category": "candidate_reuse",
+      "row_ids": [
+        "REG-A-001",
+        "REG-B-001",
+        "REG-C-001"
+      ],
+      "note_ids": [
+        "NOTE-001",
+        "NOTE-002",
+        "NOTE-018"
+      ],
+      "expected_outcome": "Existing LGT-200 from REG-C could replace LGT-100 in REG-A/B at a future tender: matching mount/supply and nominal optical limits; verify photometry in the target interiors. Distinct diffuser means distinct designs, not an alias.",
+      "donor_ref": "LGT-200",
+      "donor_variant": "REG-C",
+      "target_ref": "LGT-100",
+      "target_variants": [
+        "REG-A",
+        "REG-B"
+      ],
+      "approval_status": "not_approved",
+      "required_checks": [
+        "Target-interior photometry",
+        "Engineering release"
+      ]
+    },
+    {
+      "finding_id": "F02",
+      "category": "reference_alias",
+      "row_ids": [
+        "REG-B-001",
+        "REG-B-002",
+        "REG-B-003",
+        "REG-B-004",
+        "REG-B-005",
+        "REG-B-006",
+        "REG-B-007",
+        "REG-B-008",
+        "REG-B-009",
+        "REG-B-010",
+        "REG-B-011",
+        "REG-B-012",
+        "REG-B-013"
+      ],
+      "note_ids": [
+        "NOTE-002"
+      ],
+      "expected_outcome": "Normalize the explicitly documented alias, including child parent references; join REG-B to the observed lighting reuse group.",
+      "raw_ref": " LGT-1O0 ",
+      "canonical_ref": "LGT-100",
+      "revision": "A"
+    },
+    {
+      "finding_id": "F03",
+      "category": "unit_equivalence",
+      "row_ids": [
+        "REG-A-008",
+        "REG-B-008"
+      ],
+      "note_ids": [
+        "NOTE-003"
+      ],
+      "expected_outcome": "2.5 M and 2500 mm are both 2.5 metres per lighting module.",
+      "normalized_quantity": "2.5",
+      "normalized_uom": "m"
+    },
+    {
+      "finding_id": "F04",
+      "category": "dimension_equivalence",
+      "row_ids": [
+        "REG-A-015",
+        "REG-B-015"
+      ],
+      "note_ids": [
+        "NOTE-005"
+      ],
+      "expected_outcome": "600 mm and 0,6 m are the same item length; neither is an assembly quantity.",
+      "normalized_length_mm": "600"
+    },
+    {
+      "finding_id": "F05",
+      "category": "decimal_comma",
+      "row_ids": [
+        "REG-B-017"
+      ],
+      "note_ids": [
+        "NOTE-008"
+      ],
+      "expected_outcome": "Parse 2,4 as 2.4 metres, not 24 or two separate fields.",
+      "normalized_quantity": "2.4",
+      "normalized_uom": "m"
+    },
+    {
+      "finding_id": "F06",
+      "category": "candidate_reuse",
+      "row_ids": [
+        "REG-A-014",
+        "REG-C-014"
+      ],
+      "note_ids": [
+        "NOTE-004",
+        "NOTE-006",
+        "NOTE-007"
+      ],
+      "expected_outcome": "Existing cold-climate FLT-200 could replace FLT-100 in temperate REG-A: interface and temperature range are compatible on paper; verify pressure drop, airflow and sealing in target ducting. This does not authorize the reverse substitution.",
+      "donor_ref": "FLT-200",
+      "donor_variant": "REG-C",
+      "target_ref": "FLT-100",
+      "target_variants": [
+        "REG-A"
+      ],
+      "approval_status": "not_approved",
+      "required_checks": [
+        "Target-duct airflow and pressure drop",
+        "Sealing",
+        "Engineering release"
+      ]
+    },
+    {
+      "finding_id": "F07",
+      "category": "incompatible_near_match",
+      "row_ids": [
+        "REG-A-027",
+        "REG-C-027"
+      ],
+      "note_ids": [
+        "NOTE-009",
+        "NOTE-010"
+      ],
+      "expected_outcome": "Keep CAB-240 and CAB-110 separate despite matching descriptions and dimensions; their input voltages and harnesses differ."
+    },
+    {
+      "finding_id": "F08",
+      "category": "conflicting_attribute",
+      "row_ids": [
+        "REG-A-037",
+        "REG-C-037"
+      ],
+      "note_ids": [
+        "NOTE-011"
+      ],
+      "expected_outcome": "Flag 20 versus 25 mm for the same reference and revision; do not silently overwrite either source value."
+    },
+    {
+      "finding_id": "F09",
+      "category": "revision_difference",
+      "row_ids": [
+        "REG-A-035",
+        "REG-C-035"
+      ],
+      "note_ids": [
+        "NOTE-012"
+      ],
+      "expected_outcome": "Preserve revisions A and B as different identities; voltage equality does not establish interchangeability."
+    },
+    {
+      "finding_id": "F10",
+      "category": "missing_supplier",
+      "row_ids": [
+        "REG-C-031"
+      ],
+      "note_ids": [
+        "NOTE-013"
+      ],
+      "expected_outcome": "Flag unknown supplier; do not invent an approved source."
+    },
+    {
+      "finding_id": "F11",
+      "category": "missing_quantity",
+      "row_ids": [
+        "REG-B-032"
+      ],
+      "note_ids": [
+        "NOTE-014"
+      ],
+      "expected_outcome": "Preserve unknown quantity and flag it; do not treat blank as zero or automatically fill from another variant."
+    },
+    {
+      "finding_id": "F12",
+      "category": "duplicate_export_row",
+      "row_ids": [
+        "REG-B-019",
+        "REG-B-040"
+      ],
+      "note_ids": [
+        "NOTE-015"
+      ],
+      "expected_outcome": "Retain both source rows as evidence, but count two latches per FLT-150 cassette after resolving the documented duplicate, not four."
+    },
+    {
+      "finding_id": "F13",
+      "category": "supplier_alias",
+      "row_ids": [
+        "REG-A-014",
+        "REG-B-015"
+      ],
+      "note_ids": [
+        "NOTE-016"
+      ],
+      "expected_outcome": "Normalize FICTIAIR with trailing whitespace to FictiAir using documented supplier identity."
+    },
+    {
+      "finding_id": "F14",
+      "category": "legitimate_repeated_use",
+      "row_ids": [
+        "REG-A-010",
+        "REG-A-022",
+        "REG-A-037"
+      ],
+      "note_ids": [
+        "NOTE-017"
+      ],
+      "expected_outcome": "Do not deduplicate across parents: REG-A uses 12*4 + 2*8 + 1*6 = 70 of this bolt within the selected scope.",
+      "total_quantity": "70"
+    },
+    {
+      "finding_id": "F15",
+      "category": "candidate_reuse",
+      "row_ids": [
+        "REG-A-014",
+        "REG-B-014"
+      ],
+      "note_ids": [
+        "NOTE-004",
+        "NOTE-015",
+        "NOTE-019"
+      ],
+      "expected_outcome": "Reuse existing FLT-150 from REG-B as a candidate replacement for FLT-100 in REG-A: shared filter/gasket/interface and a smaller folded handle. Validate maintenance handling in the target bay; resolve the duplicated latch row. These remain distinct assembly references.",
+      "donor_ref": "FLT-150",
+      "donor_variant": "REG-B",
+      "target_ref": "FLT-100",
+      "target_variants": [
+        "REG-A"
+      ],
+      "approval_status": "not_approved",
+      "required_checks": [
+        "Target-bay handle operation",
+        "Duplicate-row resolution",
+        "Engineering release"
+      ]
+    },
+    {
+      "finding_id": "F16",
+      "category": "candidate_reuse",
+      "row_ids": [
+        "REG-A-027",
+        "REG-B-027"
+      ],
+      "note_ids": [
+        "NOTE-009",
+        "NOTE-014",
+        "NOTE-020"
+      ],
+      "expected_outcome": "Existing sealed CAB-240 could replace vented CAB-245 in REG-B, which permits either door. Shared input/interface/electronics support investigation, but verify 45 W heat rejection at REG-B's 45 C ambient and resolve the missing terminal quantity. No automatic merge or approved replacement.",
+      "donor_ref": "CAB-240",
+      "donor_variant": "REG-A",
+      "target_ref": "CAB-245",
+      "target_variants": [
+        "REG-B"
+      ],
+      "approval_status": "not_approved",
+      "required_checks": [
+        "Thermal test at 45 C ambient",
+        "Terminal quantity confirmation",
+        "Engineering release"
+      ]
+    },
+    {
+      "finding_id": "F17",
+      "category": "observed_reuse",
+      "row_ids": [
+        "REG-A-001",
+        "REG-B-001"
+      ],
+      "note_ids": [
+        "NOTE-001",
+        "NOTE-002"
+      ],
+      "expected_outcome": "LGT-100 revision A is already used in REG-A/B after resolving the documented alias. This baseline is not a new substitution opportunity."
+    },
+    {
+      "finding_id": "F18",
+      "category": "incompatible_near_match",
+      "row_ids": [
+        "REG-A-001",
+        "REG-C-001"
+      ],
+      "note_ids": [
+        "NOTE-001",
+        "NOTE-018"
+      ],
+      "expected_outcome": "Do not propose LGT-100 as a direct replacement for LGT-200 in REG-C: glare index 21 exceeds REG-C's maximum 19, despite matching size and supply.",
+      "donor_ref": "LGT-100",
+      "target_ref": "LGT-200",
+      "target_variants": [
+        "REG-C"
+      ]
+    },
+    {
+      "finding_id": "F19",
+      "category": "incompatible_near_match",
+      "row_ids": [
+        "REG-A-014",
+        "REG-B-014",
+        "REG-C-014"
+      ],
+      "note_ids": [
+        "NOTE-004",
+        "NOTE-006",
+        "NOTE-019"
+      ],
+      "expected_outcome": "Neither temperate filter cassette meets REG-C's -25 C requirement: the -10 C lower limit rules out direct substitution without redesign/requalification.",
+      "donor_refs": [
+        "FLT-100",
+        "FLT-150"
+      ],
+      "target_ref": "FLT-200",
+      "target_variants": [
+        "REG-C"
+      ]
+    },
+    {
+      "finding_id": "F20",
+      "category": "incompatible_near_match",
+      "row_ids": [
+        "REG-A-014",
+        "REG-B-014"
+      ],
+      "note_ids": [
+        "NOTE-004",
+        "NOTE-019"
+      ],
+      "expected_outcome": "Do not replace FLT-150 by FLT-100 in REG-B: fixed handle protrudes 35 mm into only 20 mm of available clearance.",
+      "donor_ref": "FLT-100",
+      "target_ref": "FLT-150",
+      "target_variants": [
+        "REG-B"
+      ]
+    },
+    {
+      "finding_id": "F21",
+      "category": "incompatible_near_match",
+      "row_ids": [
+        "REG-A-027",
+        "REG-B-027"
+      ],
+      "note_ids": [
+        "NOTE-009",
+        "NOTE-020"
+      ],
+      "expected_outcome": "Do not replace CAB-240 by vented CAB-245 in REG-A: that location requires a sealed door. The reverse candidate does not establish symmetric compatibility.",
+      "donor_ref": "CAB-245",
+      "target_ref": "CAB-240",
+      "target_variants": [
+        "REG-A"
+      ]
+    }
+  ]
+}

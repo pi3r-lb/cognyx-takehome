@@ -1,8 +1,9 @@
 {
-  "dataset_id": "cognyx-synthetic-rail-v1",
+  "dataset_id": "cognyx-synthetic-rail-v2",
   "data_status": "synthetic",
   "provenance": "Original authored fixtures; no Alstom, customer, or third-party dataset rows copied",
   "engineering_status": "Invented demonstration assumptions; not validated designs or substitution approvals",
+  "reuse_semantics": "All assemblies already exist on their listed variants. A candidate proposes using an existing donor design in another variant at a future tender; it is directional, conditional, and not a part-identity merge or an approved engineering change.",
   "scope": "Three fictional variants; selected lighting, filtration and information-cabinet sub-assemblies only",
   "snapshot_date": "2026-09-01",
   "generator": "src/cognyx_takehome/generate_data.py",
@@ -29,15 +30,15 @@
     },
     "bom.csv": {
       "records": 118,
-      "sha256": "c562e507fa65166e1f9b1dbc4138403db8bb808ef7b173837e902fce7077fc39"
+      "sha256": "7df3135a133abe298c8b9094056c16fd7ac3e9067184802fb466a75691b20033"
     },
     "technical_notes.csv": {
-      "records": 18,
-      "sha256": "ba988119c7ce50fd92379bbe1fa4c9b8284ce92134c67da9585ddf268d5c8832"
+      "records": 20,
+      "sha256": "0034ecda09ab3c48a7ad3c089fe115d6c7f9ecf892e6cc4ed0700ec6a3b170b6"
     },
     "expected/findings.json": {
-      "records": 16,
-      "sha256": "ec894d1667d518e0eaf558b997a2f7b34e308ac50dfc3d044892ef9daabd2fa0"
+      "records": 21,
+      "sha256": "0191a423879f9bf2081f9d4ac31b6f50db63921bb47fc2c08e3601354b7fe0ad"
     }
   }
 }
